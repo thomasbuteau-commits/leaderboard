@@ -78,6 +78,29 @@ fetch('./data.json')
       board.appendChild(row);
     });
 
+    /* ===== RANDOM SCREEN SHAKE ===== */
+
+function triggerShake() {
+  document.body.classList.add("shake");
+
+  setTimeout(() => {
+    document.body.classList.remove("shake");
+    scheduleNextShake();
+  }, 800); // duration matches CSS animation
+}
+
+function scheduleNextShake() {
+  // Random time between 30s (30000ms) and 75s (75000ms)
+  const randomDelay = Math.floor(
+    Math.random() * (75000 - 30000) + 30000
+  );
+
+  setTimeout(triggerShake, randomDelay);
+}
+
+// Start the first shake cycle
+scheduleNextShake();
+
   })
   .catch(error => {
     console.error("Error loading leaderboard:", error);
