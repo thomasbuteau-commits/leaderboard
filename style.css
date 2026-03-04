@@ -14,6 +14,14 @@ body {
   text-shadow: 0 0 20px #00ff66;
 }
 
+/* Smaller IO PREP */
+.prep {
+  font-size: 32px;
+  letter-spacing: 6px;
+  display: inline-block;
+  animation: flicker 3s infinite;
+}
+
 .countdown {
   font-size: 36px;
   margin-top: 20px;
@@ -112,5 +120,17 @@ body {
 @media (max-width: 500px) {
   #leaderboard {
     grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 15px #00ff66;
+  }
+
+  20%, 24%, 55% {
+    opacity: 0.7;
+    text-shadow: 0 0 5px #00ff66;
   }
 }
