@@ -125,6 +125,20 @@ body {
   }
 }
 
+/* ===== SUBTLE SCREEN SHAKE ===== */
+
+@keyframes subtleShake {
+  0% { transform: translate(0px, 0px); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, 2px); }
+  80% { transform: translate(1px, -2px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.shake {
+  animation: subtleShake 0.8s ease-in-out;
+}
 @media (max-width: 500px) {
   #leaderboard {
     grid-template-columns: repeat(1, 1fr);
