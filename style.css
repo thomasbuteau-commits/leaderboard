@@ -57,27 +57,12 @@ body {
 
 .player {
   position: relative;
-  font-size: 28px;
-  width: 180px;
-  height: 140px; /* fixed height so it never grows */
-  padding: 15px;
+  font-size: 48px;
+  padding: 30px 0;
   border: 2px solid #00ff66;
   box-shadow: 0 0 25px #00ff66;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.player .extra {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.player.open .extra {
-  opacity: 1;
 }
 
 /* Green hover */
