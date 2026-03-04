@@ -39,14 +39,35 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Hover */
 .player:hover {
   background-color: #00ff66;
   color: black;
   box-shadow: 0 0 50px #00ff66;
 }
 
-/* Red pulse animation */
+/* Leader Crown */
+.leader {
+  border-color: gold !important;
+  box-shadow: 0 0 40px gold;
+}
+
+.leader::before {
+  content: "👑";
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  animation: floatCrown 2s ease-in-out infinite;
+}
+
+@keyframes floatCrown {
+  0% { transform: translate(-50%, 0px); }
+  50% { transform: translate(-50%, -8px); }
+  100% { transform: translate(-50%, 0px); }
+}
+
+/* Red Pulse for zero score */
 @keyframes redPulse {
   0% { box-shadow: 0 0 10px #ff0033; }
   50% { box-shadow: 0 0 40px #ff0033; }
@@ -59,19 +80,11 @@ body {
   animation: redPulse 2.5s infinite;
 }
 
-/* Dramatic elimination fade */
+/* Eliminated */
 .eliminated {
-  animation: fadeOut 1.5s forwards;
+  opacity: 0.3;
 }
 
-@keyframes fadeOut {
-  to {
-    opacity: 0.2;
-    transform: scale(0.95);
-  }
-}
-
-/* Eliminated overlay */
 .eliminated::after {
   content: "ELIMINATED";
   position: absolute;
@@ -91,6 +104,11 @@ body {
   }
 }
 
+@media (max-width: 500px) {
+  #leaderboard {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
 @media (max-width: 500px) {
   #leaderboard {
     grid-template-columns: repeat(1, 1fr);
