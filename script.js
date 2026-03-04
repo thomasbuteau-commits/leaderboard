@@ -36,11 +36,17 @@ fetch('./data.json')
     // 1. Non-eliminated first
     // 2. Highest score first
     data.sort((a, b) => {
-      if (a.eliminated && !b.eliminated) return 1;
-      if (!a.eliminated && b.eliminated) return -1;
-      return b.score - a.score;
-    });
+  // Eliminated go to the bottom
+  if (a.eliminated && !b.eliminated) return 1;
+  if (!a.eliminated && b.eliminated) return -1;
 
+  // Then sort by score descending
+  if (b.score !== a.score) return b.score - a.score;
+
+  // If score equal, sort by ID ascending
+  return a.id.localeCompare(b.id);
+});
+    
     const board = document.getElementById('leaderboard');
     board.innerHTML = "";
 
