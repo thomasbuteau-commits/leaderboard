@@ -14,12 +14,22 @@ body {
   text-shadow: 0 0 20px #00ff66;
 }
 
-/* Smaller IO PREP */
 .prep {
   font-size: 32px;
   letter-spacing: 6px;
   display: inline-block;
   animation: flicker 3s infinite;
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 15px #00ff66;
+  }
+  20%, 24%, 55% {
+    opacity: 0.7;
+    text-shadow: 0 0 5px #00ff66;
+  }
 }
 
 .countdown {
@@ -53,29 +63,7 @@ body {
   box-shadow: 0 0 50px #00ff66;
 }
 
-/* Leader Crown */
-.leader {
-  border-color: gold !important;
-  box-shadow: 0 0 40px gold;
-}
-
-.leader::before {
-  content: "👑";
-  position: absolute;
-  top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 28px;
-  animation: floatCrown 2s ease-in-out infinite;
-}
-
-@keyframes floatCrown {
-  0% { transform: translate(-50%, 0px); }
-  50% { transform: translate(-50%, -8px); }
-  100% { transform: translate(-50%, 0px); }
-}
-
-/* Red Pulse for zero score */
+/* Zero score red pulse */
 @keyframes redPulse {
   0% { box-shadow: 0 0 10px #ff0033; }
   50% { box-shadow: 0 0 40px #ff0033; }
@@ -88,7 +76,14 @@ body {
   animation: redPulse 2.5s infinite;
 }
 
-/* Eliminated */
+/* Red hover glow */
+.zero-score:hover {
+  background-color: #ff0033;
+  color: black;
+  box-shadow: 0 0 60px #ff0033;
+}
+
+/* Eliminated styling */
 .eliminated {
   opacity: 0.3;
 }
@@ -117,18 +112,6 @@ body {
     grid-template-columns: repeat(1, 1fr);
   }
 }
-@media (max-width: 500px) {
-  #leaderboard {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
-@keyframes flicker {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% {
-    opacity: 1;
-    text-shadow: 0 0 15px #00ff66;
-  }
-
   20%, 24%, 55% {
     opacity: 0.7;
     text-shadow: 0 0 5px #00ff66;
