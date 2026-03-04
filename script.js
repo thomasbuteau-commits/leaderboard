@@ -2,7 +2,7 @@
 
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
-  const targetDate = new Date("2026-04-13T13:00:00+09:00").getTime();
+  const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
 
   setInterval(() => {
     const now = new Date().getTime();
