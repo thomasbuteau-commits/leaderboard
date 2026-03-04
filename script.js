@@ -1,4 +1,4 @@
-// Countdown Timer
+// ===== COUNTDOWN TIMER =====
 
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
@@ -26,13 +26,13 @@ function startCountdown() {
 startCountdown();
 
 
-// Leaderboard
+// ===== LEADERBOARD =====
 
 fetch('./data.json')
   .then(response => response.json())
   .then(data => {
 
-    // Sort logic:
+    // Sort:
     // 1. Non-eliminated first
     // 2. Highest score first
     data.sort((a, b) => {
@@ -48,7 +48,13 @@ fetch('./data.json')
 
       const row = document.createElement('div');
       row.className = 'player';
-      row.textContent = player.id;
+
+      // Default collapsed state (ID only)
+      row.innerHTML = `
+        <div class="player-content">
+          <div>${player.id}</div>
+        </div>
+      `;
 
       if (player.score === 0) {
         row.classList.add("zero-score");
@@ -58,48 +64,53 @@ fetch('./data.json')
         row.classList.add("eliminated");
       }
 
+      // CLICK = show full info
       row.addEventListener('click', () => {
         row.innerHTML = `
-          <div>${player.id}</div>
-          <div style="font-size:22px; margin-top:10px;">
-            ${player.name}
-          </div>
-          <div style="font-size:18px; margin-top:5px;">
-            ${player.score.toLocaleString()}
+          <div class="player-content">
+            <div>${player.id}</div>
+            <div style="font-size:18px; margin-top:6px;">
+              ${player.name}
+            </div>
+            <div style="font-size:16px; margin-top:4px;">
+              ${player.score.toLocaleString()}
+            </div>
           </div>
         `;
       });
 
-      // Auto close when mouse leaves
+      // Mouse leave = collapse back to ID
       row.addEventListener('mouseleave', () => {
-        row.textContent = player.id;
+        row.innerHTML = `
+          <div class="player-content">
+            <div>${player.id}</div>
+          </div>
+        `;
       });
 
       board.appendChild(row);
     });
 
-    /* ===== RANDOM SCREEN SHAKE ===== */
+    // ===== RANDOM SCREEN SHAKE =====
 
-function triggerShake() {
-  document.body.classList.add("shake");
+    function triggerShake() {
+      document.body.classList.add("shake");
 
-  setTimeout(() => {
-    document.body.classList.remove("shake");
+      setTimeout(() => {
+        document.body.classList.remove("shake");
+        scheduleNextShake();
+      }, 800);
+    }
+
+    function scheduleNextShake() {
+      const randomDelay = Math.floor(
+        Math.random() * (75000 - 30000) + 30000
+      );
+
+      setTimeout(triggerShake, randomDelay);
+    }
+
     scheduleNextShake();
-  }, 800); // duration matches CSS animation
-}
-
-function scheduleNextShake() {
-  // Random time between 30s (30000ms) and 75s (75000ms)
-  const randomDelay = Math.floor(
-    Math.random() * (75000 - 30000) + 30000
-  );
-
-  setTimeout(triggerShake, randomDelay);
-}
-
-// Start the first shake cycle
-scheduleNextShake();
 
   })
   .catch(error => {
