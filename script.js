@@ -28,7 +28,7 @@ startCountdown();
 
 // Squid Game Style Leaderboard
 
-fetch('data.json')
+fetch('./data.json')
   .then(response => response.json())
   .then(data => {
 
@@ -90,11 +90,6 @@ fetch('data.json')
       board.appendChild(row);
     });
 
-  })
-  .catch(error => {
-    console.error("Error loading leaderboard:", error);
-  });
-    });
   })
   .catch(error => {
     console.error("Error loading leaderboard:", error);
