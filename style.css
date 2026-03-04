@@ -4,37 +4,32 @@ body {
   color: #00ff66;
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 .title {
-  text-align: center;
-  font-size: 60px;
+  font-size: 70px;
   margin-top: 40px;
-  letter-spacing: 5px;
+  letter-spacing: 8px;
 }
 
 #leaderboard {
-  width: 70%;
-  margin: 50px auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 30px;
+  width: 80%;
+  margin: 60px auto;
 }
 
 .player {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px 0;
-  font-size: 32px;
-  border-bottom: 1px solid #00ff66;
+  font-size: 40px;
+  padding: 20px;
+  border: 2px solid #00ff66;
+  box-shadow: 0 0 20px #00ff66;
+  transition: 0.3s;
 }
 
-.rank {
-  width: 60px;
-}
-
-.name {
-  flex: 1;
-  text-align: left;
-}
-
-.score {
-  text-align: right;
+.player:hover {
+  background-color: #00ff66;
+  color: black;
 }
