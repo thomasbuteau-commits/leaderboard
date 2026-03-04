@@ -1,4 +1,4 @@
-// Countdown Timer to April 13, 2026 at 1:00 PM JST
+// Countdown Timer
 
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
@@ -26,65 +26,53 @@ function startCountdown() {
 startCountdown();
 
 
-// Squid Game Style Leaderboard
+// Leaderboard
 
 fetch('./data.json')
   .then(response => response.json())
   .then(data => {
 
-    // Sort highest score first
-    data.sort((a, b) => b.score - a.score);
+    // Sort logic:
+    // 1. Non-eliminated first
+    // 2. Highest score first
+    data.sort((a, b) => {
+      if (a.eliminated && !b.eliminated) return 1;
+      if (!a.eliminated && b.eliminated) return -1;
+      return b.score - a.score;
+    });
 
     const board = document.getElementById('leaderboard');
     board.innerHTML = "";
 
-    let currentlyOpen = null;
-
-    data.forEach((player, index) => {
+    data.forEach(player => {
 
       const row = document.createElement('div');
       row.className = 'player';
-
       row.textContent = player.id;
-      row.dataset.id = player.id;
 
-      // Crown for current leader
-      if (index === 0) {
-        row.classList.add("leader");
-      }
-
-      // Zero score pulse
       if (player.score === 0) {
         row.classList.add("zero-score");
       }
 
-      // Eliminated overlay
       if (player.eliminated === true) {
         row.classList.add("eliminated");
       }
 
       row.addEventListener('click', () => {
+        row.innerHTML = `
+          <div>${player.id}</div>
+          <div style="font-size:22px; margin-top:10px;">
+            ${player.name}
+          </div>
+          <div style="font-size:18px; margin-top:5px;">
+            ${player.score.toLocaleString()}
+          </div>
+        `;
+      });
 
-        if (currentlyOpen && currentlyOpen !== row) {
-          currentlyOpen.textContent = currentlyOpen.dataset.id;
-        }
-
-        if (currentlyOpen === row) {
-          row.textContent = player.id;
-          currentlyOpen = null;
-        } else {
-          row.innerHTML = `
-            <div>${player.id}</div>
-            <div style="font-size:22px; margin-top:10px;">
-              ${player.name}
-            </div>
-            <div style="font-size:18px; margin-top:5px;">
-              ${player.score.toLocaleString()}
-            </div>
-          `;
-          currentlyOpen = row;
-        }
-
+      // Auto close when mouse leaves
+      row.addEventListener('mouseleave', () => {
+        row.textContent = player.id;
       });
 
       board.appendChild(row);
