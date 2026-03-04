@@ -1,7 +1,6 @@
 fetch('data.json')
   .then(response => response.json())
   .then(data => {
-    // Sort highest score first
     data.sort((a, b) => b.score - a.score);
 
     const board = document.getElementById('leaderboard');
@@ -13,25 +12,25 @@ fetch('data.json')
 
       const rankNumber = String(index + 1).padStart(3, '0');
 
-      // Display number by default
       row.textContent = rankNumber;
 
-      // Highlight 1st place slightly brighter
-      if (index === 0) {
-        row.style.boxShadow = "0 0 40px #00ff66";
-        row.style.fontWeight = "bold";
-      }
-
-      // Click to toggle score
-      let showingScore = false;
+      let expanded = false;
 
       row.addEventListener('click', () => {
-        if (!showingScore) {
-          row.textContent = player.score.toLocaleString();
-          showingScore = true;
+        if (!expanded) {
+          row.innerHTML = `
+            <div>${rankNumber}</div>
+            <div style="font-size:24px; margin-top:10px;">
+              ${player.name}
+            </div>
+            <div style="font-size:20px; margin-top:5px;">
+              ${player.score.toLocaleString()}
+            </div>
+          `;
+          expanded = true;
         } else {
           row.textContent = rankNumber;
-          showingScore = false;
+          expanded = false;
         }
       });
 
