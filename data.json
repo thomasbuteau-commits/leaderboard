@@ -1,13 +1,13 @@
 [
   { "name": "HS", "score": 1000000 },
   { "name": "not qualified", "score": 0 },
-  { "name": "not qualified", "score": 0 }
-  { "name": "not qualified", "score": 0 }
-  { "name": "not qualified", "score": 0 }
-  { "name": "not qualified", "score": 0 }
-  { "name": "not qualified", "score": 0 }
-  { "name": "not qualified", "score": 0 }
-  { "name": "not qualified", "score": 0 }
-  { "name": "not qualified", "score": 0 }
+  { "name": "not qualified", "score": 0 },
+  { "name": "not qualified", "score": 0 },
+  { "name": "not qualified", "score": 0 },
+  { "name": "not qualified", "score": 0 },
+  { "name": "not qualified", "score": 0 },
+  { "name": "not qualified", "score": 0 },
+  { "name": "not qualified", "score": 0 },
+  { "name": "not qualified", "score": 0 },
   { "name": "not qualified", "score": 0 }
 ]
