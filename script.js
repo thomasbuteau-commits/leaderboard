@@ -59,13 +59,21 @@ fetch('./data.json')
       }
 
       row.addEventListener('click', () => {
-  row.classList.add("open");
-});
+        row.innerHTML = `
+          <div>${player.id}</div>
+          <div style="font-size:22px; margin-top:10px;">
+            ${player.name}
+          </div>
+          <div style="font-size:18px; margin-top:5px;">
+            ${player.score.toLocaleString()}
+          </div>
+        `;
+      });
 
       // Auto close when mouse leaves
       row.addEventListener('mouseleave', () => {
-  row.classList.remove("open");
-});
+        row.textContent = player.id;
+      });
 
       board.appendChild(row);
     });
