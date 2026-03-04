@@ -1,4 +1,4 @@
-// Countdown Timer to April 13, 2026 at 1:00 PM JST (UTC+9)
+// Countdown Timer to April 13, 2026 at 1:00 PM JST
 
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
@@ -26,11 +26,13 @@ function startCountdown() {
 startCountdown();
 
 
-// Leaderboard
+// Squid Game Style Leaderboard
 
 fetch('data.json')
   .then(response => response.json())
   .then(data => {
+
+    // Sort highest score first
     data.sort((a, b) => b.score - a.score);
 
     const board = document.getElementById('leaderboard');
@@ -39,35 +41,40 @@ fetch('data.json')
     let currentlyOpen = null;
 
     data.forEach((player, index) => {
+
       const row = document.createElement('div');
       row.className = 'player';
 
-      const rankNumber = String(index + 1).padStart(3, '0');
-      row.textContent = rankNumber;
-      row.dataset.rank = rankNumber;
+      row.textContent = player.id;
+      row.dataset.id = player.id;
 
-      // Zero score → pulse red
+      // Crown for current leader
+      if (index === 0) {
+        row.classList.add("leader");
+      }
+
+      // Zero score pulse
       if (player.score === 0) {
         row.classList.add("zero-score");
       }
 
-      // Eliminated flag
+      // Eliminated overlay
       if (player.eliminated === true) {
         row.classList.add("eliminated");
       }
 
       row.addEventListener('click', () => {
+
         if (currentlyOpen && currentlyOpen !== row) {
-          currentlyOpen.textContent =
-            String(currentlyOpen.dataset.rank).padStart(3, '0');
+          currentlyOpen.textContent = currentlyOpen.dataset.id;
         }
 
         if (currentlyOpen === row) {
-          row.textContent = rankNumber;
+          row.textContent = player.id;
           currentlyOpen = null;
         } else {
           row.innerHTML = `
-            <div>${rankNumber}</div>
+            <div>${player.id}</div>
             <div style="font-size:22px; margin-top:10px;">
               ${player.name}
             </div>
@@ -77,9 +84,16 @@ fetch('data.json')
           `;
           currentlyOpen = row;
         }
+
       });
 
       board.appendChild(row);
+    });
+
+  })
+  .catch(error => {
+    console.error("Error loading leaderboard:", error);
+  });
     });
   })
   .catch(error => {
