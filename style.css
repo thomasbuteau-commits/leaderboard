@@ -14,15 +14,23 @@ body {
   text-shadow: 0 0 20px #00ff66;
 }
 
+.countdown {
+  font-size: 36px;
+  margin-top: 20px;
+  text-shadow: 0 0 15px #00ff66;
+  letter-spacing: 3px;
+}
+
 #leaderboard {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
   width: 80%;
   margin: 60px auto;
 }
 
 .player {
+  position: relative;
   font-size: 48px;
   padding: 30px 0;
   border: 2px solid #00ff66;
@@ -31,12 +39,52 @@ body {
   transition: all 0.3s ease;
 }
 
+/* Hover */
 .player:hover {
   background-color: #00ff66;
   color: black;
   box-shadow: 0 0 50px #00ff66;
 }
 
+/* Red pulse animation */
+@keyframes redPulse {
+  0% { box-shadow: 0 0 10px #ff0033; }
+  50% { box-shadow: 0 0 40px #ff0033; }
+  100% { box-shadow: 0 0 10px #ff0033; }
+}
+
+.zero-score {
+  border-color: #ff0033 !important;
+  color: #ff0033 !important;
+  animation: redPulse 2.5s infinite;
+}
+
+/* Dramatic elimination fade */
+.eliminated {
+  animation: fadeOut 1.5s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0.2;
+    transform: scale(0.95);
+  }
+}
+
+/* Eliminated overlay */
+.eliminated::after {
+  content: "ELIMINATED";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ff0033;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+/* Responsive */
 @media (max-width: 900px) {
   #leaderboard {
     grid-template-columns: repeat(2, 1fr);
@@ -47,9 +95,4 @@ body {
   #leaderboard {
     grid-template-columns: repeat(1, 1fr);
   }
-}
-
-.player:hover {
-  background-color: #00ff66;
-  color: black;
 }
