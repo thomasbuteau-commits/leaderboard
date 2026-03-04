@@ -1,9 +1,9 @@
-// ===== COUNTDOWN TIMER =====
+// Countdown Timer
 
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
-  const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
-  
+  const targetDate = new Date("2026-04-13T13:00:00+09:00").getTime();
+
   setInterval(() => {
     const now = new Date().getTime();
     const difference = targetDate - now;
@@ -26,13 +26,13 @@ function startCountdown() {
 startCountdown();
 
 
-// ===== LEADERBOARD =====
+// Leaderboard
 
 fetch('./data.json')
   .then(response => response.json())
   .then(data => {
 
-    // Sort:
+    // Sort logic:
     // 1. Non-eliminated first
     // 2. Highest score first
     data.sort((a, b) => {
@@ -48,13 +48,7 @@ fetch('./data.json')
 
       const row = document.createElement('div');
       row.className = 'player';
-
-      // Default collapsed state (ID only)
-      row.innerHTML = `
-        <div class="player-content">
-          <div>${player.id}</div>
-        </div>
-      `;
+      row.textContent = player.id;
 
       if (player.score === 0) {
         row.classList.add("zero-score");
@@ -64,53 +58,25 @@ fetch('./data.json')
         row.classList.add("eliminated");
       }
 
-      // CLICK = show full info
       row.addEventListener('click', () => {
         row.innerHTML = `
-          <div class="player-content">
-            <div>${player.id}</div>
-            <div style="font-size:18px; margin-top:6px;">
-              ${player.name}
-            </div>
-            <div style="font-size:16px; margin-top:4px;">
-              ${player.score.toLocaleString()}
-            </div>
+          <div>${player.id}</div>
+          <div style="font-size:22px; margin-top:10px;">
+            ${player.name}
+          </div>
+          <div style="font-size:18px; margin-top:5px;">
+            ${player.score.toLocaleString()}
           </div>
         `;
       });
 
-      // Mouse leave = collapse back to ID
+      // Auto close when mouse leaves
       row.addEventListener('mouseleave', () => {
-        row.innerHTML = `
-          <div class="player-content">
-            <div>${player.id}</div>
-          </div>
-        `;
+        row.textContent = player.id;
       });
 
       board.appendChild(row);
     });
-
-    // ===== RANDOM SCREEN SHAKE =====
-
-    function triggerShake() {
-      document.body.classList.add("shake");
-
-      setTimeout(() => {
-        document.body.classList.remove("shake");
-        scheduleNextShake();
-      }, 800);
-    }
-
-    function scheduleNextShake() {
-      const randomDelay = Math.floor(
-        Math.random() * (75000 - 30000) + 30000
-      );
-
-      setTimeout(triggerShake, randomDelay);
-    }
-
-    scheduleNextShake();
 
   })
   .catch(error => {
