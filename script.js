@@ -1,77 +1,103 @@
-async function loadLeaderboard() {
+async function loadLeaderboard(){
 
-  try {
+try{
 
-    const response = await fetch("leaderboard.json");
-    const data = await response.json();
+const response = await fetch("leaderboard.json?t=" + Date.now());
+const data = await response.json();
 
-    const board = document.getElementById("leaderboard");
-    board.innerHTML = "";
+const board = document.getElementById("leaderboard");
 
-    data.players.forEach(player => {
+board.innerHTML = "";
 
-      const tile = document.createElement("div");
-      tile.className = "tile";
+/* sort by score */
 
-      if (player.eliminated) {
-        tile.classList.add("eliminated");
-      }
+data.sort((a,b)=>b.score-a.score);
 
-      if (player.winner) {
-        tile.classList.add("winner");
-      }
+/* find leader */
 
-      tile.innerHTML = `
-        <div class="name">${player.name}</div>
-        <div class="points">${player.points}</div>
-      `;
+const topScore = data[0].score;
 
-      board.appendChild(tile);
+data.forEach(player=>{
 
-    });
+const tile = document.createElement("div");
 
-  } catch (err) {
+tile.classList.add("tile");
 
-    console.log("Leaderboard load error:", err);
+/* eliminated */
 
-  }
+if(player.eliminated){
+tile.classList.add("eliminated");
 }
 
+/* leader */
 
-/* ===== AUTO REFRESH EVERY 10 SECONDS ===== */
+if(player.score === topScore && player.score > 0){
+tile.classList.add("winner");
+}
+
+/* tile layout */
+
+tile.innerHTML = `
+
+<div class="name">${player.name}</div>
+
+<div class="points">₩${player.score.toLocaleString()}</div>
+
+`;
+
+board.appendChild(tile);
+
+});
+
+}
+
+catch(err){
+
+console.log("JSON load error:",err);
+
+}
+
+}
+
+/* load immediately */
 
 loadLeaderboard();
-setInterval(loadLeaderboard, 10000);
+
+/* refresh every 10 seconds */
+
+setInterval(loadLeaderboard,10000);
 
 
+/* countdown timer */
 
-/* ===== COUNTDOWN TIMER ===== */
+function startCountdown(){
 
-function startCountdown() {
+const target = new Date("2026-04-01T20:00:00");
 
-  const target = new Date("2026-04-01T20:00:00");
+function update(){
 
-  function updateCountdown() {
+const now = new Date();
+const diff = target-now;
 
-    const now = new Date();
-    const diff = target - now;
+if(diff<=0){
+document.getElementById("countdown").innerText="LIVE";
+return;
+}
 
-    if (diff <= 0) {
-      document.getElementById("countdown").innerText = "LIVE";
-      return;
-    }
+const d=Math.floor(diff/(1000*60*60*24));
+const h=Math.floor((diff/(1000*60*60))%24);
+const m=Math.floor((diff/(1000*60))%60);
+const s=Math.floor((diff/1000)%60);
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
+document.getElementById("countdown").innerText=
+`${d}d ${h}h ${m}m ${s}s`;
 
-    document.getElementById("countdown").innerText =
-      `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  }
+}
 
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+update();
+
+setInterval(update,1000);
+
 }
 
 startCountdown();
