@@ -1,54 +1,55 @@
 body {
   background: black;
-  color: #00ff66;
   font-family: 'Courier New', monospace;
+  color: #00ff66;
   text-align: center;
   margin: 0;
   padding: 20px;
 }
 
-/* Title */
+/* TITLE */
 .title {
-  font-size: 36px; /* 15% larger */
+  font-size: 36px; /* slightly bigger */
   letter-spacing: 4px;
   margin-bottom: 10px;
 }
+
 .prep {
-  font-size: 18px;
-  display: inline-block;
+  font-size: 28px;
   animation: flicker 3s infinite;
 }
+
 @keyframes flicker {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
-  20%, 24%, 55% { opacity: 0.7; }
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 15px #00ff66; }
+  20%, 24%, 55% { opacity: 0.7; text-shadow: 0 0 5px #00ff66; }
 }
 
-/* Countdown */
+/* COUNTDOWN */
 #countdown {
-  font-size: 16px;
+  font-size: 20px;
   margin-bottom: 20px;
   color: #00ff66;
+  text-shadow: 0 0 10px #00ff66;
 }
 
-/* Leaderboard grid */
+/* LEADERBOARD GRID */
 #leaderboard {
   display: grid;
-  grid-template-columns: repeat(4, auto); /* columns sized by content */
-  gap: 8px;                               /* smaller gap between tiles */
-  max-width: 800px;                        /* restrict overall grid width */
-  margin: 0 auto;                          /* center the grid horizontally */
-  justify-content: center;                  /* extra centering if columns are narrow */
-  padding: 20px 0;                         /* breathing space top/bottom */
+  grid-template-columns: repeat(4, auto);
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+  padding: 10px 0;
 }
 
-/* Tiles */
+/* TILE */
 .tile {
   background: #002b1a;
   border: 2px solid #00ff66;
   border-radius: 6px;
-  padding: 10px 16px;                       /* add more horizontal padding */
-  font-size: 22px;
-  font-weight: bold;
+  padding: 10px 16px;
+  font-size: 20px;
+  font-weight: bold; /* front ID bolded */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,56 +57,53 @@ body {
   box-shadow: 0 0 8px #00ff6644;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
-  white-space: nowrap;                       /* keep text on one line */
+  white-space: nowrap;
+  width: auto;
+  min-width: 70px;
 }
 
 /* Hover glow */
 .tile:hover {
-  box-shadow: 0 0 28px #00ff66;
+  box-shadow: 0 0 25px #00ff66;
 }
 
-/* Eliminated tile */
+/* ELIMINATED TILES */
 .eliminated {
   background: #2b0000;
   border-color: #ff2c2c;
   color: #ff6a6a;
   box-shadow: 0 0 8px #ff2c2c55;
 }
+
 .eliminated:hover {
   box-shadow: 0 0 20px #ff2c2c;
 }
 
-/* Zero score red pulse */
-@keyframes redPulse {
-  0% { box-shadow: 0 0 8px #ff0033; }
-  50% { box-shadow: 0 0 25px #ff0033; }
-  100% { box-shadow: 0 0 8px #ff0033; }
-}
-.zero-score {
-  border-color: #ff0033 !important;
-  color: #ff0033 !important;
-  animation: redPulse 2.5s infinite;
+/* NAME + SCORE on reveal */
+.name, .points {
+  font-size: 18px;
+  font-weight: normal;
+  display: inline-block;
+  margin: 0 4px;
 }
 
-/* Reveal name + score on one line with flickering ₩ in front of score */
-.reveal {
-  font-size: 18px;       /* bigger reveal font */
-  font-weight: normal;   /* normal weight on reveal */
-  white-space: nowrap;
+.won-flicker {
+  animation: winFlicker 2s infinite;
 }
-.reveal span {
-  margin-left: 6px;      /* spacing between name and score */
+
+@keyframes winFlicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  60% { opacity: 1; }
+  70% { opacity: 0.2; }
+  100% { opacity: 1; }
 }
-.reveal .score {
-  margin-left: 6px;
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  #leaderboard { grid-template-columns: repeat(2, auto); }
 }
-.reveal .score::before {
-  content: "₩";
-  margin-right: 2px;
-  color: #00ff66;
-  animation: wonFlicker 1s infinite;
-}
-@keyframes wonFlicker {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0.3; }
+
+@media (max-width: 500px) {
+  #leaderboard { grid-template-columns: repeat(1, auto); }
 }
