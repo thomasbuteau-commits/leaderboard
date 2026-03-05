@@ -1,201 +1,206 @@
-body {
-  background-color: black;
-  font-family: 'Courier New', monospace;
-  color: #00ff66;
-  margin: 0;
-  padding: 0;
-  text-align: center;
+/* =========================
+   PAGE
+========================= */
+
+body{
+    margin:0;
+    background:black;
+    font-family:monospace;
+    color:#00ff9c;
 }
 
-/* ===== TITLE ===== */
+/* =========================
+   BOARD GRID
+========================= */
 
-.title {
-  font-size: 70px;
-  margin-top: 40px;
-  letter-spacing: 8px;
-  text-shadow: 0 0 20px #00ff66;
+#leaderboard{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    padding:40px;
 }
 
-.prep {
-  font-size: 32px;
-  letter-spacing: 6px;
-  display: inline-block;
-  animation: flicker 3s infinite;
+/* =========================
+   TILE
+========================= */
+
+.tile{
+    position:relative;
+    height:120px;
+    perspective:1000px;
 }
 
-@keyframes flicker {
-  0%,18%,22%,25%,53%,57%,100% {
-    opacity:1;
-    text-shadow:0 0 15px #00ff66;
-  }
-  20%,24%,55% {
-    opacity:0.7;
-    text-shadow:0 0 5px #00ff66;
-  }
+/* flip container */
+
+.tile-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    transition:transform 0.7s;
+    transform-style:preserve-3d;
 }
 
-/* ===== COUNTDOWN ===== */
+/* flipped state */
 
-.countdown {
-  font-size: 36px;
-  margin-top: 20px;
-  text-shadow: 0 0 15px #00ff66;
-  letter-spacing: 3px;
+.tile.flipped .tile-inner{
+    transform:rotateY(180deg);
 }
 
-/* ===== LEADERBOARD GRID ===== */
+/* =========================
+   TILE SIDES
+========================= */
 
-#leaderboard {
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  gap: 30px;
-  width: 80%;
-  margin: 60px auto;
+.tile-front,
+.tile-back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    backface-visibility:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:10px;
+
+    border:2px solid rgba(0,255,150,0.5);
+
+    background:rgba(0,0,0,0.6);
+
+    backdrop-filter:blur(6px);
+
+    box-shadow:
+        0 0 10px rgba(0,255,150,0.3),
+        inset 0 0 10px rgba(0,255,150,0.2);
+
+    overflow:hidden;
 }
 
-/* ===== PLAYER TILE ===== */
+/* front */
 
-.player {
-  position: relative;
-  font-size: 42px;
-  height: 110px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 2px solid #00ff66;
-  box-shadow: 0 0 25px #00ff66;
-  cursor: pointer;
-
-  transition: transform 0.6s ease;
+.tile-front{
+    font-size:48px;
 }
 
-/* Hover */
+/* back */
 
-.player:hover {
-  background-color:#00ff66;
-  color:black;
-  box-shadow:0 0 50px #00ff66;
+.tile-back{
+    transform:rotateY(180deg);
+    font-size:34px;
 }
 
-/* ===== SCORE REVEAL ===== */
+/* =========================
+   WON SIGN
+========================= */
 
-.reveal {
-  display:flex;
-  gap:20px;
-  align-items:center;
-  justify-content:center;
+.won{
+    color:#00ff9c;
+    text-shadow:
+        0 0 8px #00ff9c,
+        0 0 18px #00ff9c,
+        0 0 35px #00ff9c;
+
+    animation:wonFlicker 2s infinite;
 }
 
-.initials {
-  font-size:34px;
-  letter-spacing:3px;
+@keyframes wonFlicker{
+
+    0%{opacity:1}
+    5%{opacity:.2}
+    10%{opacity:1}
+    12%{opacity:.3}
+    16%{opacity:1}
+    60%{opacity:1}
+    61%{opacity:.2}
+    62%{opacity:1}
 }
 
-.score {
-  font-size:30px;
-  opacity:0;
-  transition:opacity 0.6s ease;
+/* =========================
+   TOP SCORE PULSE
+========================= */
+
+.tile.rank1{
+
+    animation:topPulse 3s infinite;
+
 }
 
-.player.show-score .score {
-  opacity:1;
+@keyframes topPulse{
+
+    0%{
+        box-shadow:
+        0 0 10px rgba(0,255,150,0.4),
+        0 0 20px rgba(0,255,150,0.4);
+    }
+
+    50%{
+        box-shadow:
+        0 0 20px rgba(0,255,150,0.9),
+        0 0 40px rgba(0,255,150,0.9);
+    }
+
+    100%{
+        box-shadow:
+        0 0 10px rgba(0,255,150,0.4),
+        0 0 20px rgba(0,255,150,0.4);
+    }
+
 }
 
-/* ===== WON SYMBOL FLICKER ===== */
+/* =========================
+   TERMINAL SCAN LINE
+========================= */
 
-@keyframes wonFlicker {
-  0%,18%,22%,25%,53%,57%,100% {opacity:1;}
-  20%,24%,55% {opacity:0.6;}
+.tile::after{
+
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:200%;
+    height:2px;
+
+    background:rgba(0,255,150,0.25);
+
+    animation:scan 6s linear infinite;
 }
 
-.won {
-  animation: wonFlicker 2s infinite;
+@keyframes scan{
+
+    0%{top:0}
+    100%{top:100%}
+
 }
 
-/* ===== ZERO SCORE ===== */
+/* =========================
+   CCTV SCREEN FLICKER
+========================= */
 
-@keyframes redPulse {
-  0% {box-shadow:0 0 10px #ff0033;}
-  50% {box-shadow:0 0 40px #ff0033;}
-  100% {box-shadow:0 0 10px #ff0033;}
+body::after{
+
+    content:"";
+    pointer-events:none;
+
+    position:fixed;
+    left:0;
+    top:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(255,255,255,0.02);
+
+    animation:cctv 8s infinite;
+
 }
 
-.zero-score {
-  border-color:#ff0033 !important;
-  color:#ff0033 !important;
-  animation:redPulse 2.5s infinite;
-}
+@keyframes cctv{
 
-.zero-score:hover {
-  background-color:#ff0033;
-  color:white !important;
-  box-shadow:0 0 60px #ff0033;
-}
+    0%{opacity:0}
+    96%{opacity:0}
+    97%{opacity:.4}
+    98%{opacity:0}
+    99%{opacity:.2}
+    100%{opacity:0}
 
-/* ===== ELIMINATED ===== */
-
-.eliminated {
-  opacity:0.3;
-}
-
-.eliminated::after {
-  content:"ELIMINATED";
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  color:#ff0033;
-  font-size:20px;
-  font-weight:bold;
-  letter-spacing:3px;
-}
-
-/* ===== SCORE CHANGE EFFECTS ===== */
-
-@keyframes scoreUpFlash {
-  0% {box-shadow:0 0 20px #00ff66;}
-  50% {box-shadow:0 0 60px #00ff66;}
-  100% {box-shadow:0 0 20px #00ff66;}
-}
-
-@keyframes scoreDownFlash {
-  0% {box-shadow:0 0 20px #ff0033;}
-  50% {box-shadow:0 0 60px #ff0033;}
-  100% {box-shadow:0 0 20px #ff0033;}
-}
-
-.score-up {
-  animation:scoreUpFlash 1s ease;
-}
-
-.score-down {
-  animation:scoreDownFlash 1s ease;
-}
-
-/* ===== LEADER GLOW ===== */
-
-@keyframes leaderGlow {
-  0% {box-shadow:0 0 20px #00ff66;}
-  50% {box-shadow:0 0 90px #00ff66;}
-  100% {box-shadow:0 0 20px #00ff66;}
-}
-
-.new-leader {
-  animation:leaderGlow 1.5s ease;
-}
-
-/* ===== RESPONSIVE ===== */
-
-@media (max-width:900px) {
-  #leaderboard {
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media (max-width:500px) {
-  #leaderboard {
-    grid-template-columns:repeat(1,1fr);
-  }
 }
