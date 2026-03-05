@@ -9,7 +9,7 @@ body {
 
 /* Title */
 .title {
-  font-size: 36px;   /* increased ~15% */
+  font-size: 36px; /* 15% larger */
   letter-spacing: 4px;
   margin-bottom: 10px;
 }
@@ -34,7 +34,7 @@ body {
 #leaderboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 25px; /* more space between tiles */
+  gap: 30px; /* more space between tiles */
   max-width: 1200px;
   margin: auto;
 }
@@ -44,13 +44,15 @@ body {
   background: #002b1a;
   border: 2px solid #00ff66;
   border-radius: 6px;
-  padding: 10px 12px;
-  font-size: 18px;        /* bigger front font */
-  font-weight: bold;      /* bold ID number */
+  padding: 10px;
+  font-size: 22px;      /* bigger font on front */
+  font-weight: bold;     /* bold ID number */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 45px;           /* slightly taller but still rectangular */
+  height: 50px;          /* slightly taller */
+  width: 90%;            /* shorten horizontal */
+  max-width: 200px;
   box-shadow: 0 0 8px #00ff6644;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
@@ -85,13 +87,19 @@ body {
   animation: redPulse 2.5s infinite;
 }
 
-/* Reveal name + score on one line with flickering ₩ */
+/* Reveal name + score on one line with flickering ₩ in front of score */
 .reveal {
-  font-size: 14px; /* bigger reveal font */
-  font-weight: normal; /* not bold on reveal */
+  font-size: 18px;       /* bigger reveal font */
+  font-weight: normal;   /* normal weight on reveal */
   white-space: nowrap;
 }
-.reveal::before {
+.reveal span {
+  margin-left: 6px;      /* spacing between name and score */
+}
+.reveal .score {
+  margin-left: 6px;
+}
+.reveal .score::before {
   content: "₩";
   margin-right: 2px;
   color: #00ff66;
