@@ -1,109 +1,172 @@
-/* ===== PAGE ===== */
+body{
 
-body {
-  background: #000;
-  color: #fff;
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 0;
+background:black;
+color:#00ff9c;
+
+font-family:monospace;
+
+text-align:center;
+
+margin:0;
+padding:20px;
+
 }
 
+/* title */
 
-/* ===== TITLE ===== */
+.title{
 
-#title {
-  font-size: 36px;
-  margin-top: 8px;
-  margin-bottom: 2px;
-  letter-spacing: 2px;
+font-size:32px;
+
+letter-spacing:4px;
+
+margin-bottom:5px;
+
+animation: titleFlicker 6s infinite;
+
 }
 
+/* title flicker */
 
-/* ===== COUNTDOWN ===== */
+@keyframes titleFlicker{
 
-#countdown {
-  font-size: 22px;
-  margin-bottom: 12px;
+0%{opacity:1}
+92%{opacity:1}
+94%{opacity:.4}
+96%{opacity:1}
+98%{opacity:.5}
+100%{opacity:1}
+
 }
 
+/* countdown */
 
-/* ===== GRID ===== */
+#countdown{
 
-#leaderboard {
-  width: 85%;
-  margin: auto;
+font-size:18px;
 
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+margin-bottom:20px;
+
+color:#00ff9c;
+
 }
 
+/* leaderboard grid */
 
-/* ===== TILE ===== */
+#leaderboard{
 
-.tile {
-  background: #0b0b0b;
+display:grid;
 
-  border: 3px solid #00ff66;
-  border-radius: 8px;
+grid-template-columns:repeat(4,1fr);
 
-  height: 85px;
+gap:12px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+max-width:1200px;
 
-  transition: transform .15s ease, box-shadow .15s ease;
+margin:auto;
+
 }
 
+/* tiles */
 
-/* ===== HOVER GLOW ===== */
+.tile{
 
-.tile:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px #00ff66;
+background:#002b1a;
+
+border:2px solid #00ff9c;
+
+border-radius:6px;
+
+padding:12px;
+
+font-size:20px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+height:55px;
+
+box-shadow:0 0 10px #00ff9c44;
+
+transition:box-shadow .2s;
+
 }
 
-.tile:active {
-  transform: scale(1.03);
-  box-shadow: 0 0 35px #00ff66;
+/* hover glow */
+
+.tile:hover{
+
+box-shadow:0 0 20px #00ff9c;
+
 }
 
+/* eliminated */
 
-/* ===== PLAYER NAME ===== */
+.eliminated{
 
-.name {
-  font-size: 16px;
-  margin-bottom: 4px;
+background:#2b0000;
+
+border-color:#ff2c2c;
+
+color:#ff6a6a;
+
+box-shadow:0 0 10px #ff2c2c55;
+
 }
 
+/* eliminated hover */
 
-/* ===== SCORE ===== */
+.eliminated:hover{
 
-.points {
-  font-size: 20px;
+box-shadow:0 0 20px #ff2c2c;
+
 }
 
+/* winner */
 
-/* ===== ELIMINATED ===== */
+.winner{
 
-.tile.eliminated {
-  border-color: red;
-  box-shadow: 0 0 10px red;
-  opacity: .7;
+border-color:#00ff9c;
+
 }
 
+/* W flicker */
 
-/* ===== WINNER FLICKER ===== */
+.winner .name::after{
 
-@keyframes flicker {
-  0% { opacity: 1; }
-  50% { opacity: .35; }
-  100% { opacity: 1; }
+content:"  W";
+
+margin-left:8px;
+
+color:#00ff9c;
+
+animation:winFlicker 2s infinite;
+
 }
 
-.tile.winner {
-  animation: flicker 1s infinite;
+@keyframes winFlicker{
+
+0%{opacity:1}
+50%{opacity:.3}
+60%{opacity:1}
+70%{opacity:.2}
+100%{opacity:1}
+
+}
+
+/* name + score */
+
+.name{
+
+font-size:18px;
+
+}
+
+.points{
+
+font-size:18px;
+
 }
