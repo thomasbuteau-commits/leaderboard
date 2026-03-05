@@ -25,14 +25,14 @@ startCountdown();
 
 // ================== Leaderboard ==================
 const board = document.getElementById('leaderboard');
+const tiles = {}; // Keep references to tile elements
 
 function loadLeaderboard() {
-  // Add timestamp to prevent caching
   fetch('./data.json?timestamp=' + new Date().getTime())
     .then(response => response.json())
     .then(data => {
 
-      // Sort logic: non-eliminated first, then by score descending, then ID ascending
+      // Sort: non-eliminated first, highest score first, then ID ascending
       data.sort((a, b) => {
         if (a.eliminated && !b.eliminated) return 1;
         if (!a.eliminated && b.eliminated) return -1;
@@ -40,17 +40,20 @@ function loadLeaderboard() {
         return a.id.localeCompare(b.id);
       });
 
-      // Create or update tiles
-      data.forEach(player => {
-        let tile = document.getElementById(player.id);
+      data.forEach((player, index) => {
+        let tile = tiles[player.id];
+
         if (!tile) {
+          // Create tile once
           tile = document.createElement('div');
           tile.id = player.id;
           tile.className = 'player';
+          tile.style.transition = 'all 0.5s ease';
           board.appendChild(tile);
 
-          // Add click behavior for score reveal
+          // Click to reveal score
           tile.addEventListener('click', () => {
+            tile.classList.add("open");
             tile.innerHTML = `
               <div>${player.id}</div>
               <div style="font-size:22px; margin-top:10px;">
@@ -62,25 +65,26 @@ function loadLeaderboard() {
             `;
           });
 
+          // Auto close when mouse leaves
           tile.addEventListener('mouseleave', () => {
+            tile.classList.remove("open");
             tile.textContent = player.id;
           });
+
+          tiles[player.id] = tile;
         }
 
         // Update classes
         tile.classList.toggle("zero-score", player.score === 0);
         tile.classList.toggle("eliminated", player.eliminated);
 
-        // Update tile content if not open
+        // Update content if not open
         if (!tile.classList.contains("open")) {
           tile.textContent = player.id;
         }
-      });
 
-      // Reorder tiles in DOM according to sorted data
-      data.forEach(player => {
-        const tile = document.getElementById(player.id);
-        board.appendChild(tile);
+        // Reorder tile using flex/grid order
+        tile.style.order = index;
       });
 
     })
