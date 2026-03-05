@@ -120,6 +120,39 @@ body {
   }
 }
 
+/* ===== SCORE CHANGE EFFECTS ===== */
+
+@keyframes scoreUpFlash {
+  0% { box-shadow: 0 0 20px #00ff66; }
+  50% { box-shadow: 0 0 60px #00ff66; }
+  100% { box-shadow: 0 0 20px #00ff66; }
+}
+
+@keyframes scoreDownFlash {
+  0% { box-shadow: 0 0 20px #ff0033; }
+  50% { box-shadow: 0 0 60px #ff0033; }
+  100% { box-shadow: 0 0 20px #ff0033; }
+}
+
+.score-up {
+  animation: scoreUpFlash 1s ease;
+}
+
+.score-down {
+  animation: scoreDownFlash 1s ease;
+}
+
+/* leader glow */
+@keyframes leaderGlow {
+  0% { box-shadow: 0 0 20px #00ff66; }
+  50% { box-shadow: 0 0 90px #00ff66; }
+  100% { box-shadow: 0 0 20px #00ff66; }
+}
+
+.new-leader {
+  animation: leaderGlow 1.5s ease;
+}
+
 @media (max-width: 500px) {
   #leaderboard {
     grid-template-columns: repeat(1, 1fr);
