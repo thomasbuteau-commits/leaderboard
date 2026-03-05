@@ -5,6 +5,7 @@ function startCountdown() {
   const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
 
   setInterval(() => {
+
     const now = new Date().getTime();
     const difference = targetDate - now;
 
@@ -13,120 +14,93 @@ function startCountdown() {
       return;
     }
 
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((difference / (1000 * 60)) % 60);
+    const days = Math.floor(difference / (1000*60*60*24));
+    const hours = Math.floor((difference / (1000*60*60)) % 24);
+    const minutes = Math.floor((difference / (1000*60)) % 60);
     const seconds = Math.floor((difference / 1000) % 60);
 
     countdownElement.textContent =
       `${days}D ${hours}H ${minutes}M ${seconds}S`;
-  }, 1000);
+
+  },1000);
 }
 
 startCountdown();
 
 
-// ===== LEADERBOARD =====
 
-let previousScores = {};
+/* ===== LEADERBOARD ===== */
 
 function loadLeaderboard() {
 
-  fetch("./data.json?nocache=" + Date.now())
-    .then(response => response.json())
-    .then(data => {
+fetch('./data.json')
+.then(response => response.json())
+.then(data => {
 
-      // Sort leaderboard
-      data.sort((a, b) => {
+data.sort((a,b)=>{
 
-        if (a.eliminated && !b.eliminated) return 1;
-        if (!a.eliminated && b.eliminated) return -1;
+if(a.eliminated && !b.eliminated) return 1;
+if(!a.eliminated && b.eliminated) return -1;
 
-        if (b.score !== a.score) return b.score - a.score;
+if(b.score !== a.score) return b.score - a.score;
 
-        return a.id.localeCompare(b.id);
-
-      });
-
-      const board = document.getElementById("leaderboard");
-      board.innerHTML = "";
-
-      data.forEach((player, index) => {
-
-        const row = document.createElement("div");
-        row.className = "player";
-        row.textContent = player.id;
-
-        if (player.score === 0) {
-          row.classList.add("zero-score");
-        }
-
-        if (player.eliminated === true) {
-          row.classList.add("eliminated");
-        }
-
-        // ===== SCORE CHANGE DETECTION =====
-
-        const oldScore = previousScores[player.id];
-
-        if (oldScore !== undefined) {
-
-          if (player.score > oldScore) {
-            row.classList.add("score-up");
-          }
-
-          if (player.score < oldScore) {
-            row.classList.add("score-down");
-          }
-
-        }
-
-        // ===== NEW LEADER EFFECT =====
-
-        if (index === 0) {
-          const oldLeader = Object.keys(previousScores).find(id =>
-            previousScores[id] === Math.max(...Object.values(previousScores))
-          );
-
-          if (oldLeader && oldLeader !== player.id) {
-            row.classList.add("new-leader");
-          }
-        }
-
-        previousScores[player.id] = player.score;
-
-        // ===== CLICK TO OPEN TILE =====
-
-  row.addEventListener('click', () => {
-
-  row.innerHTML = `
-    <div class="initials">${player.name}</div>
-    <div class="score">₩ ${player.score.toLocaleString()}</div>
-  `;
-
-  row.classList.add("show-score");
+return a.id.localeCompare(b.id);
 
 });
 
-        row.addEventListener('mouseleave', () => {
-  row.classList.remove("show-score");
-  row.textContent = player.id;
+const board = document.getElementById('leaderboard');
+board.innerHTML="";
+
+data.forEach(player=>{
+
+const row = document.createElement('div');
+row.className='player';
+
+row.textContent=player.id;
+
+if(player.score===0){
+row.classList.add("zero-score");
+}
+
+if(player.eliminated===true){
+row.classList.add("eliminated");
+}
+
+row.addEventListener('click',()=>{
+
+row.classList.add("show-score");
+
+row.innerHTML=`
+<div class="reveal">
+<span class="initials">${player.name}</span>
+<span class="score"><span class="won">₩</span>${player.score.toLocaleString()}</span>
+</div>
+`;
+
 });
 
-        board.appendChild(row);
+/* close on mouse leave */
 
-      });
+row.addEventListener('mouseleave',()=>{
+row.classList.remove("show-score");
+row.textContent=player.id;
+});
 
-    })
-    .catch(error => {
-      console.error("Error loading leaderboard:", error);
-    });
+board.appendChild(row);
+
+});
+
+})
+.catch(error=>{
+console.error("Error loading leaderboard:",error);
+});
 
 }
 
+/* initial load */
 
-// First load
 loadLeaderboard();
 
-// Refresh every 10 seconds
-setInterval(loadLeaderboard, 10000);
+/* auto refresh every 10 seconds */
+
+setInterval(loadLeaderboard,10000);
