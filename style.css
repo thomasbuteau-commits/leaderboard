@@ -65,6 +65,11 @@ body {
   transition: all 0.3s ease;
 }
 
+/* ===== PLAYER Transition ===== */
+.player {
+  transition: all 0.5s ease; /* Smooth position/size transitions */
+}
+
 /* Green hover */
 .player:hover {
   background-color: #00ff66;
