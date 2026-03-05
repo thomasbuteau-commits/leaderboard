@@ -53,6 +53,11 @@ body {
   margin: 60px auto;
 }
 
+#leaderboard {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 /* ===== PLAYER TILE ===== */
 
 .player {
