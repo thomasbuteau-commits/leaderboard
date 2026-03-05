@@ -20,20 +20,19 @@ function startCountdown() {
     countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
   }, 1000);
 }
-
 startCountdown();
 
 // Leaderboard
 function loadLeaderboard() {
   fetch('./data.json?t=' + new Date().getTime()) // prevent cache
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
 
       // Sort: non-eliminated first, then descending score
       data.sort((a, b) => {
-        if (a.eliminated && !b.eliminated) return 1;
-        if (!a.eliminated && b.eliminated) return -1;
-        if (b.score !== a.score) return b.score - a.score;
+        if(a.eliminated && !b.eliminated) return 1;
+        if(!a.eliminated && b.eliminated) return -1;
+        if(b.score !== a.score) return b.score - a.score;
         return a.id.localeCompare(b.id);
       });
 
@@ -43,7 +42,7 @@ function loadLeaderboard() {
       data.forEach(player => {
         const tile = document.createElement('div');
         tile.className = 'tile';
-        if (player.eliminated) tile.classList.add('eliminated');
+        if(player.eliminated) tile.classList.add('eliminated');
 
         tile.textContent = player.id; // front ID
 
@@ -62,7 +61,6 @@ function loadLeaderboard() {
 
         board.appendChild(tile);
       });
-
     })
     .catch(err => console.error("Error loading leaderboard:", err));
 }
