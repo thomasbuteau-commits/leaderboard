@@ -1,5 +1,4 @@
-// Countdown Timer
-
+// ================== Countdown Timer ==================
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
   const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
@@ -22,69 +21,55 @@ function startCountdown() {
       `${days}D ${hours}H ${minutes}M ${seconds}S`;
   }, 1000);
 }
-
 startCountdown();
 
 
-// Leaderboard
+// ================== Leaderboard ==================
+const board = document.getElementById('leaderboard');
 
-fetch('./data.json')
-  .then(response => response.json())
-  .then(data => {
+function loadLeaderboard() {
+  fetch('./data.json')
+    .then(response => response.json())
+    .then(data => {
 
-    // Sort logic:
-    // 1. Non-eliminated first
-    // 2. Highest score first
-    data.sort((a, b) => {
-  // Eliminated go to the bottom
-  if (a.eliminated && !b.eliminated) return 1;
-  if (!a.eliminated && b.eliminated) return -1;
+      // Sort by eliminated first, then score descending, then numeric ID
+      data.sort((a, b) => {
+        if (a.eliminated && !b.eliminated) return 1;
+        if (!a.eliminated && b.eliminated) return -1;
+        if (b.score !== a.score) return b.score - a.score;
+        return Number(a.id) - Number(b.id);
+      });
 
-  // Then sort by score descending
-  if (b.score !== a.score) return b.score - a.score;
+      // Remove all existing tiles and recreate (simpler with growing tiles)
+      board.innerHTML = "";
 
-  // If score equal, sort by ID ascending
-  return a.id.localeCompare(b.id);
-});
-    
-    const board = document.getElementById('leaderboard');
-    board.innerHTML = "";
+      data.forEach(player => {
+        const tile = document.createElement('div');
+        tile.className = 'player';
 
-    data.forEach(player => {
+        // Add zero-score or eliminated classes
+        if (player.score === 0) tile.classList.add("zero-score");
+        if (player.eliminated) tile.classList.add("eliminated");
 
-      const row = document.createElement('div');
-      row.className = 'player';
-      row.textContent = player.id;
-
-      if (player.score === 0) {
-        row.classList.add("zero-score");
-      }
-
-      if (player.eliminated === true) {
-        row.classList.add("eliminated");
-      }
-
-      row.addEventListener('click', () => {
-        row.innerHTML = `
-          <div>${player.id}</div>
-          <div style="font-size:22px; margin-top:10px;">
-            ${player.name}
-          </div>
-          <div style="font-size:18px; margin-top:5px;">
-            ${player.score.toLocaleString()}
-          </div>
+        // Build inner HTML with fade-in score
+        tile.innerHTML = `
+          <div class="initials">${player.name}</div>
+          <div class="id">${player.id}</div>
+          <div class="score extra">${player.score.toLocaleString()}</div>
         `;
+
+        // Click to show/hide score (fade-in via CSS)
+        tile.addEventListener('click', () => tile.classList.toggle("open"));
+        tile.addEventListener('mouseleave', () => tile.classList.remove("open"));
+
+        board.appendChild(tile);
       });
+    })
+    .catch(err => console.error("Error loading leaderboard:", err));
+}
 
-      // Auto close when mouse leaves
-      row.addEventListener('mouseleave', () => {
-        row.textContent = player.id;
-      });
+// Initial load
+loadLeaderboard();
 
-      board.appendChild(row);
-    });
-
-  })
-  .catch(error => {
-    console.error("Error loading leaderboard:", error);
-  });
+// Auto-update every 10 seconds
+setInterval(loadLeaderboard, 10000);
