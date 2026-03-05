@@ -1,206 +1,227 @@
-/* =========================
-   PAGE
-========================= */
+/* ======================
+PAGE
+====================== */
 
 body{
-    margin:0;
-    background:black;
-    font-family:monospace;
-    color:#00ff9c;
+margin:0;
+background:black;
+font-family:monospace;
+color:#00ff9c;
+overflow:hidden;
 }
 
-/* =========================
-   BOARD GRID
-========================= */
+/* ======================
+GRID
+====================== */
 
 #leaderboard{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
-    padding:40px;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:40px;
 }
 
-/* =========================
-   TILE
-========================= */
+/* ======================
+TILE
+====================== */
 
 .tile{
-    position:relative;
-    height:120px;
-    perspective:1000px;
+position:relative;
+height:120px;
+perspective:1000px;
 }
 
 /* flip container */
 
 .tile-inner{
-    position:relative;
-    width:100%;
-    height:100%;
-    transition:transform 0.7s;
-    transform-style:preserve-3d;
+position:relative;
+width:100%;
+height:100%;
+transition:transform .7s;
+transform-style:preserve-3d;
 }
-
-/* flipped state */
 
 .tile.flipped .tile-inner{
-    transform:rotateY(180deg);
+transform:rotateY(180deg);
 }
 
-/* =========================
-   TILE SIDES
-========================= */
+/* ======================
+FRONT + BACK
+====================== */
 
 .tile-front,
 .tile-back{
-    position:absolute;
-    width:100%;
-    height:100%;
-    backface-visibility:hidden;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+position:absolute;
+width:100%;
+height:100%;
 
-    border-radius:10px;
+display:flex;
+justify-content:center;
+align-items:center;
 
-    border:2px solid rgba(0,255,150,0.5);
+border-radius:10px;
 
-    background:rgba(0,0,0,0.6);
+backface-visibility:hidden;
 
-    backdrop-filter:blur(6px);
+/* GLASS TILE LOOK */
 
-    box-shadow:
-        0 0 10px rgba(0,255,150,0.3),
-        inset 0 0 10px rgba(0,255,150,0.2);
+background:rgba(0,0,0,.65);
+backdrop-filter:blur(6px);
 
-    overflow:hidden;
+border:2px solid rgba(0,255,150,.6);
+
+box-shadow:
+0 0 10px rgba(0,255,150,.4),
+inset 0 0 10px rgba(0,255,150,.3);
+
+overflow:hidden;
 }
 
 /* front */
 
 .tile-front{
-    font-size:48px;
+font-size:48px;
 }
 
 /* back */
 
 .tile-back{
-    transform:rotateY(180deg);
-    font-size:34px;
+transform:rotateY(180deg);
+font-size:32px;
 }
 
-/* =========================
-   WON SIGN
-========================= */
+/* ======================
+WON FLICKER
+====================== */
 
 .won{
-    color:#00ff9c;
-    text-shadow:
-        0 0 8px #00ff9c,
-        0 0 18px #00ff9c,
-        0 0 35px #00ff9c;
 
-    animation:wonFlicker 2s infinite;
+color:#00ff9c;
+
+text-shadow:
+0 0 8px #00ff9c,
+0 0 20px #00ff9c,
+0 0 40px #00ff9c;
+
+animation:wonflicker 2s infinite;
 }
 
-@keyframes wonFlicker{
+@keyframes wonflicker{
 
-    0%{opacity:1}
-    5%{opacity:.2}
-    10%{opacity:1}
-    12%{opacity:.3}
-    16%{opacity:1}
-    60%{opacity:1}
-    61%{opacity:.2}
-    62%{opacity:1}
+0%{opacity:1}
+5%{opacity:.2}
+8%{opacity:1}
+12%{opacity:.3}
+20%{opacity:1}
+60%{opacity:1}
+61%{opacity:.2}
+62%{opacity:1}
+
 }
 
-/* =========================
-   TOP SCORE PULSE
-========================= */
+/* ======================
+TOP SCORE PULSE
+====================== */
 
 .tile.rank1{
 
-    animation:topPulse 3s infinite;
+animation:toppulse 3s infinite;
 
 }
 
-@keyframes topPulse{
+@keyframes toppulse{
 
-    0%{
-        box-shadow:
-        0 0 10px rgba(0,255,150,0.4),
-        0 0 20px rgba(0,255,150,0.4);
-    }
+0%{
 
-    50%{
-        box-shadow:
-        0 0 20px rgba(0,255,150,0.9),
-        0 0 40px rgba(0,255,150,0.9);
-    }
-
-    100%{
-        box-shadow:
-        0 0 10px rgba(0,255,150,0.4),
-        0 0 20px rgba(0,255,150,0.4);
-    }
+box-shadow:
+0 0 10px rgba(0,255,150,.5),
+0 0 20px rgba(0,255,150,.5);
 
 }
 
-/* =========================
-   TERMINAL SCAN LINE
-========================= */
+50%{
+
+box-shadow:
+0 0 25px rgba(0,255,150,1),
+0 0 50px rgba(0,255,150,1);
+
+}
+
+100%{
+
+box-shadow:
+0 0 10px rgba(0,255,150,.5),
+0 0 20px rgba(0,255,150,.5);
+
+}
+
+}
+
+/* ======================
+SCAN LINE
+====================== */
 
 .tile::after{
 
-    content:"";
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:200%;
-    height:2px;
+content:"";
 
-    background:rgba(0,255,150,0.25);
+position:absolute;
 
-    animation:scan 6s linear infinite;
-}
+left:0;
+width:100%;
+height:2px;
 
-@keyframes scan{
+background:rgba(0,255,150,.3);
 
-    0%{top:0}
-    100%{top:100%}
+animation:scanline 5s linear infinite;
 
 }
 
-/* =========================
-   CCTV SCREEN FLICKER
-========================= */
+@keyframes scanline{
+
+0%{top:0}
+100%{top:100%}
+
+}
+
+/* ======================
+CCTV FLICKER
+====================== */
 
 body::after{
 
-    content:"";
-    pointer-events:none;
+content:"";
 
-    position:fixed;
-    left:0;
-    top:0;
+position:fixed;
+top:0;
+left:0;
 
-    width:100%;
-    height:100%;
+width:100%;
+height:100%;
 
-    background:rgba(255,255,255,0.02);
+pointer-events:none;
 
-    animation:cctv 8s infinite;
+background:rgba(255,255,255,.03);
+
+animation:cctv 9s infinite;
 
 }
 
 @keyframes cctv{
 
-    0%{opacity:0}
-    96%{opacity:0}
-    97%{opacity:.4}
-    98%{opacity:0}
-    99%{opacity:.2}
-    100%{opacity:0}
+0%{opacity:0}
+
+95%{opacity:0}
+
+96%{opacity:.4}
+
+97%{opacity:0}
+
+98%{opacity:.2}
+
+99%{opacity:0}
+
+100%{opacity:0}
 
 }
