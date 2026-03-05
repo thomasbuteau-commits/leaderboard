@@ -19,14 +19,12 @@ function startCountdown() {
 
     countdownElement.textContent =
       `${days}D ${hours}H ${minutes}M ${seconds}S`;
-
   }, 1000);
 }
 startCountdown();
 
 
 // ================== Leaderboard ==================
-
 const board = document.getElementById("leaderboard");
 const tileMap = new Map();
 
@@ -36,7 +34,6 @@ function loadLeaderboard() {
     .then(res => res.json())
     .then(data => {
 
-      // Sort players
       data.sort((a, b) => {
         if (a.eliminated && !b.eliminated) return 1;
         if (!a.eliminated && b.eliminated) return -1;
@@ -44,11 +41,17 @@ function loadLeaderboard() {
         return a.id.localeCompare(b.id);
       });
 
+      // STEP 1: Record current positions
+      const firstPositions = new Map();
+      tileMap.forEach((tile, id) => {
+        firstPositions.set(id, tile.getBoundingClientRect());
+      });
+
+      // STEP 2: Create / Update tiles
       data.forEach(player => {
 
         let tile = tileMap.get(player.id);
 
-        // Create tile once
         if (!tile) {
           tile = document.createElement("div");
           tile.className = "player";
@@ -73,24 +76,41 @@ function loadLeaderboard() {
           });
         }
 
-        // Update stored data
         tile.dataset.name = player.name;
         tile.dataset.score = player.score;
 
-        // Update styling
         tile.classList.toggle("zero-score", player.score === 0);
         tile.classList.toggle("eliminated", player.eliminated);
 
-        // If tile not open, keep simple view
         if (!tile.querySelector("div:nth-child(2)")) {
           tile.textContent = player.id;
         }
       });
 
-      // Reorder tiles smoothly (no clearing, no flashing)
+      // STEP 3: Reorder in DOM
+      data.forEach(player => {
+        board.appendChild(tileMap.get(player.id));
+      });
+
+      // STEP 4: Animate movement (FLIP)
       data.forEach(player => {
         const tile = tileMap.get(player.id);
-        board.appendChild(tile);
+        const last = tile.getBoundingClientRect();
+        const first = firstPositions.get(player.id);
+
+        if (!first) return;
+
+        const deltaX = first.left - last.left;
+        const deltaY = first.top - last.top;
+
+        if (deltaX !== 0 || deltaY !== 0) {
+          tile.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+
+          requestAnimationFrame(() => {
+            tile.style.transition = "transform 0.5s ease";
+            tile.style.transform = "translate(0, 0)";
+          });
+        }
       });
 
     })
