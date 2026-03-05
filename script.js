@@ -1,103 +1,72 @@
-async function loadLeaderboard(){
+// Countdown Timer
+function startCountdown() {
+  const countdownElement = document.getElementById("countdown");
+  const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
 
-try{
+  setInterval(() => {
+    const now = new Date().getTime();
+    const difference = targetDate - now;
 
-const response = await fetch("leaderboard.json?t=" + Date.now());
-const data = await response.json();
+    if (difference <= 0) {
+      countdownElement.textContent = "TIME'S UP.";
+      return;
+    }
 
-const board = document.getElementById("leaderboard");
+    const days = Math.floor(difference / (1000*60*60*24));
+    const hours = Math.floor((difference / (1000*60*60)) % 24);
+    const minutes = Math.floor((difference / (1000*60)) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
 
-board.innerHTML = "";
-
-/* sort by score */
-
-data.sort((a,b)=>b.score-a.score);
-
-/* find leader */
-
-const topScore = data[0].score;
-
-data.forEach(player=>{
-
-const tile = document.createElement("div");
-
-tile.classList.add("tile");
-
-/* eliminated */
-
-if(player.eliminated){
-tile.classList.add("eliminated");
-}
-
-/* leader */
-
-if(player.score === topScore && player.score > 0){
-tile.classList.add("winner");
-}
-
-/* tile layout */
-
-tile.innerHTML = `
-
-<div class="name">${player.name}</div>
-
-<div class="points">₩${player.score.toLocaleString()}</div>
-
-`;
-
-board.appendChild(tile);
-
-});
-
-}
-
-catch(err){
-
-console.log("JSON load error:",err);
-
-}
-
-}
-
-/* load immediately */
-
-loadLeaderboard();
-
-/* refresh every 10 seconds */
-
-setInterval(loadLeaderboard,10000);
-
-
-/* countdown timer */
-
-function startCountdown(){
-
-const target = new Date("2026-04-01T20:00:00");
-
-function update(){
-
-const now = new Date();
-const diff = target-now;
-
-if(diff<=0){
-document.getElementById("countdown").innerText="LIVE";
-return;
-}
-
-const d=Math.floor(diff/(1000*60*60*24));
-const h=Math.floor((diff/(1000*60*60))%24);
-const m=Math.floor((diff/(1000*60))%60);
-const s=Math.floor((diff/1000)%60);
-
-document.getElementById("countdown").innerText=
-`${d}d ${h}h ${m}m ${s}s`;
-
-}
-
-update();
-
-setInterval(update,1000);
-
+    countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+  }, 1000);
 }
 
 startCountdown();
+
+// Fetch leaderboard every 10 seconds
+function fetchLeaderboard() {
+  fetch('./data.json?t=' + Date.now())
+    .then(response => response.json())
+    .then(data => {
+
+      // sort by eliminated + score
+      data.sort((a,b)=>{
+        if(a.eliminated && !b.eliminated) return 1;
+        if(!a.eliminated && b.eliminated) return -1;
+        return b.score - a.score;
+      });
+
+      const board = document.getElementById('leaderboard');
+      board.innerHTML = "";
+
+      data.forEach(player=>{
+        const row = document.createElement('div');
+        row.className = 'tile';
+
+        row.innerHTML = `
+          <div class="name">${player.name}</div>
+          <div class="points">₩${player.score.toLocaleString()}</div>
+        `;
+
+        if(player.score === data[0].score && !player.eliminated){
+          row.classList.add('winner');
+        }
+        if(player.score === 0 && !player.eliminated){
+          row.classList.add('zero-score');
+        }
+        if(player.eliminated){
+          row.classList.add('eliminated');
+        }
+
+        board.appendChild(row);
+      });
+
+    })
+    .catch(err=>console.error("Error loading leaderboard:",err));
+}
+
+// initial fetch
+fetchLeaderboard();
+
+// repeat every 10 seconds
+setInterval(fetchLeaderboard, 10000);
