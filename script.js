@@ -21,10 +21,9 @@ startCountdown();
 
 // Fetch and render leaderboard
 function loadLeaderboard() {
-  fetch('./data.json?t=' + Date.now())
+  fetch('./data.json?t=' + Date.now()) // prevent caching
     .then(res => res.json())
     .then(data => {
-      // Sort: non-eliminated first, then highest score, then id
       data.sort((a,b) => {
         if(a.eliminated && !b.eliminated) return 1;
         if(!a.eliminated && b.eliminated) return -1;
@@ -44,7 +43,7 @@ function loadLeaderboard() {
         tile.textContent = player.id;
 
         tile.addEventListener('click', () => {
-          tile.innerHTML = `<span class="reveal">${player.name} ₩${player.score.toLocaleString()}</span>`;
+          tile.innerHTML = `<span class="reveal">${player.name} ${player.score.toLocaleString()}</span>`;
         });
 
         tile.addEventListener('mouseleave', () => {
@@ -57,6 +56,6 @@ function loadLeaderboard() {
     .catch(err => console.error("Error loading leaderboard:", err));
 }
 
-// Initial load and every 10 seconds
+// Initial load + update every 10s
 loadLeaderboard();
 setInterval(loadLeaderboard, 10000);
