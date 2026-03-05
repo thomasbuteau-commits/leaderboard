@@ -9,7 +9,7 @@ body {
 
 /* ===== TITLE ===== */
 .title {
-  font-size: 50px; /* smaller than before */
+  font-size: 50px;
   letter-spacing: 6px;
   margin-bottom: 10px;
 }
@@ -49,11 +49,13 @@ body {
   padding: 12px;
   font-size: 18px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 55px;
   box-shadow: 0 0 10px #00ff6644;
+  cursor: pointer;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  user-select: none;
 }
 
 /* hover glow */
@@ -61,7 +63,7 @@ body {
   box-shadow: 0 0 30px #00ff66;
 }
 
-/* eliminated tile */
+/* eliminated */
 .eliminated {
   background-color: #2b0000;
   border-color: #ff2c2c;
@@ -70,11 +72,11 @@ body {
 }
 
 .eliminated:hover {
-  box-shadow: 0 0 20px #ff2c2c;
+  box-shadow: 0 0 30px #ff2c2c;
 }
 
 /* winner W flicker */
-.winner .name::after {
+.winner::after {
   content: " W";
   margin-left: 6px;
   color: #00ff66;
@@ -87,11 +89,6 @@ body {
   60% { opacity: 1; }
   70% { opacity: 0.2; }
   100% { opacity: 1; }
-}
-
-/* name + points on tile */
-.name, .points {
-  font-size: 16px; /* smaller font to fit reveal side */
 }
 
 /* zero-score red pulse */
@@ -112,10 +109,7 @@ body {
   color: white;
 }
 
-@media (max-width: 900px) {
-  #leaderboard { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 500px) {
-  #leaderboard { grid-template-columns: repeat(1, 1fr); }
+.name, .points {
+  font-size: 14px; /* smaller font to fit one line on reveal */
+  white-space: nowrap;
 }
