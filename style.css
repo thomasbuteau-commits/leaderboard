@@ -29,7 +29,7 @@ body {
     text-shadow: 0 0 15px #00ff66;
   }
   20%,24%,55% {
-    opacity: .7;
+    opacity: 0.6;
     text-shadow: 0 0 5px #00ff66;
   }
 }
@@ -38,26 +38,24 @@ body {
 
 .countdown {
   font-size: 36px;
-  margin-top: 20px;
-  text-shadow: 0 0 15px #00ff66;
-  letter-spacing: 3px;
-}
-
-/* ===== TOTAL POINTS ===== */
-
-.total-pool {
-  font-size: 34px;
   margin-top: 10px;
-  letter-spacing: 4px;
-  text-shadow: 0 0 20px #00ff66;
+  text-shadow: 0 0 15px #00ff66;
 }
 
-/* ===== LEADERBOARD ===== */
+/* ===== PRIZE POOL ===== */
+
+#prizePool {
+  font-size: 26px;
+  margin-top: 10px;
+  text-shadow: 0 0 10px #00ff66;
+}
+
+/* ===== GRID ===== */
 
 #leaderboard {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(4,1fr);
+  gap: 25px;
   width: 80%;
   margin: 60px auto;
 }
@@ -65,106 +63,91 @@ body {
 /* ===== PLAYER TILE ===== */
 
 .player {
-  position: relative;
-  font-size: 32px;   /* smaller so big scores fit */
+  font-size: 32px;
   padding: 18px 0;
   border: 2px solid #00ff66;
-  box-shadow: 0 0 25px #00ff66;
+  box-shadow: 0 0 20px #00ff66;
   cursor: pointer;
-  transition: transform 0.4s ease;
+  transition: all .3s ease;
 }
 
 /* hover */
 
 .player:hover {
-  background-color: #00ff66;
-  color: black;
-  box-shadow: 0 0 50px #00ff66;
+  background:#00ff66;
+  color:black;
+  box-shadow:0 0 40px #00ff66;
 }
 
-/* ===== REVEAL SIDE ===== */
+/* ===== REVEAL TILE ===== */
 
-.player.open {
-  background-color: black;
-  color: #00ff66;
+.player.reveal {
+  background:black;
+  color:#00ff66;
+  font-size:22px;
 }
 
-.player.open .score {
-  animation: wonFlicker 2s infinite;
+/* ===== WON SYMBOL FLICKER ===== */
+
+.won {
+  animation: wonflicker 2s infinite;
 }
 
-/* won flicker */
-
-@keyframes wonFlicker {
+@keyframes wonflicker {
   0%,18%,22%,25%,53%,57%,100% {
-    opacity: 1;
-    text-shadow: 0 0 10px #00ff66;
+    opacity:1;
   }
   20%,24%,55% {
-    opacity: .6;
-    text-shadow: 0 0 3px #00ff66;
+    opacity:0.4;
   }
 }
 
 /* ===== ZERO SCORE ===== */
 
 @keyframes redPulse {
-  0% { box-shadow: 0 0 10px #ff0033; }
-  50% { box-shadow: 0 0 40px #ff0033; }
-  100% { box-shadow: 0 0 10px #ff0033; }
+  0% { box-shadow:0 0 10px #ff0033; }
+  50% { box-shadow:0 0 40px #ff0033; }
+  100% { box-shadow:0 0 10px #ff0033; }
 }
 
 .zero-score {
-  border-color: #ff0033 !important;
-  color: #ff0033 !important;
-  animation: redPulse 2.5s infinite;
+  border-color:#ff0033 !important;
+  color:#ff0033 !important;
+  animation:redPulse 2.5s infinite;
 }
 
 .zero-score:hover {
-  background-color: #ff0033;
-  color: white !important;
+  background:#ff0033;
+  color:white;
 }
 
 /* ===== ELIMINATED ===== */
 
 .eliminated {
-  opacity: 0.3;
+  opacity:.3;
 }
 
 .eliminated::after {
-  content: "ELIMINATED";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ff0033;
-  font-size: 18px;
-  font-weight: bold;
-  letter-spacing: 3px;
-}
-
-/* ===== SCORE CHANGE EFFECT ===== */
-
-@keyframes scoreUpFlash {
-  0% { box-shadow: 0 0 20px #00ff66; }
-  50% { box-shadow: 0 0 60px #00ff66; }
-  100% { box-shadow: 0 0 20px #00ff66; }
-}
-
-.score-up {
-  animation: scoreUpFlash 1s ease;
+  content:"ELIMINATED";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  color:#ff0033;
+  font-size:18px;
+  letter-spacing:3px;
 }
 
 /* ===== RESPONSIVE ===== */
 
-@media (max-width: 900px) {
+@media (max-width:900px){
   #leaderboard {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:repeat(2,1fr);
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width:500px){
   #leaderboard {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns:repeat(1,1fr);
   }
 }
