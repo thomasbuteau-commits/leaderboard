@@ -2,7 +2,7 @@
   { "id": "000", "name": "DEMO", "score": 0, "eliminated": true },
   { "id": "001", "name": "TH", "score": 0 },
   { "id": "002", "name": "AR", "score": 0 },
-  { "id": "003", "name": "AS", "score": 25000 },
+  { "id": "003", "name": "AS", "score": 0 },
   { "id": "004", "name": "ERB", "score": 0 },
   { "id": "005", "name": "FN", "score": 20000 },
   { "id": "006", "name": "HH", "score": 0 },
