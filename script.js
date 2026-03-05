@@ -97,23 +97,21 @@ function loadLeaderboard() {
 
         // ===== CLICK TO OPEN TILE =====
 
-        row.addEventListener("click", () => {
+  row.addEventListener('click', () => {
 
-          row.innerHTML = `
-            <div>${player.id}</div>
-            <div style="font-size:22px; margin-top:10px;">
-              ${player.name}
-            </div>
-            <div style="font-size:18px; margin-top:5px;">
-              ${player.score.toLocaleString()}
-            </div>
-          `;
+  row.innerHTML = `
+    <div class="initials">${player.name}</div>
+    <div class="score">₩ ${player.score.toLocaleString()}</div>
+  `;
 
-        });
+  row.classList.add("show-score");
 
-        row.addEventListener("mouseleave", () => {
-          row.textContent = player.id;
-        });
+});
+
+        row.addEventListener('mouseleave', () => {
+  row.classList.remove("show-score");
+  row.textContent = player.id;
+});
 
         board.appendChild(row);
 
