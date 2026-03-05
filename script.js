@@ -39,34 +39,35 @@ function fetchLeaderboard() {
       const board = document.getElementById('leaderboard');
       board.innerHTML = "";
 
-      data.forEach(player=>{
-        const row = document.createElement('div');
-        row.className = 'tile';
+      data.forEach(player => {
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.textContent = player.id;
 
-        row.innerHTML = `
-          <div class="name">${player.name}</div>
-          <div class="points">₩${player.score.toLocaleString()}</div>
-        `;
+        if(player.eliminated) tile.classList.add('eliminated');
+        if(player.score === 0 && !player.eliminated) tile.classList.add('zero-score');
 
-        if(player.score === data[0].score && !player.eliminated){
-          row.classList.add('winner');
-        }
-        if(player.score === 0 && !player.eliminated){
-          row.classList.add('zero-score');
-        }
-        if(player.eliminated){
-          row.classList.add('eliminated');
-        }
+        // Winner tile gets flickering W
+        if(player.score === data[0].score && !player.eliminated) tile.classList.add('winner');
 
-        board.appendChild(row);
+        // On click, reveal name + score on same line
+        tile.addEventListener('click', () => {
+          tile.innerHTML = `<span class="name">${player.name}</span> <span class="points">₩${player.score.toLocaleString()}</span>`;
+        });
+
+        // On mouse leave, return to showing ID
+        tile.addEventListener('mouseleave', () => {
+          tile.textContent = player.id;
+        });
+
+        board.appendChild(tile);
       });
 
     })
-    .catch(err=>console.error("Error loading leaderboard:",err));
+    .catch(err => console.error("Error loading leaderboard:", err));
 }
 
 // initial fetch
 fetchLeaderboard();
-
 // repeat every 10 seconds
 setInterval(fetchLeaderboard, 10000);
