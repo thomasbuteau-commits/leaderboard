@@ -1,66 +1,77 @@
 async function loadLeaderboard() {
 
-  const response = await fetch("leaderboard.json");
-  const data = await response.json();
+  try {
 
-  const board = document.getElementById("leaderboard");
-  board.innerHTML = "";
+    const response = await fetch("leaderboard.json");
+    const data = await response.json();
 
-  data.players.forEach(player => {
+    const board = document.getElementById("leaderboard");
+    board.innerHTML = "";
 
-    const tile = document.createElement("div");
-    tile.className = "tile";
+    data.players.forEach(player => {
 
-    if (player.revealed) {
-      tile.classList.add("revealed");
-    }
+      const tile = document.createElement("div");
+      tile.className = "tile";
 
-    if (player.eliminated) {
-      tile.classList.add("eliminated");
-    }
+      if (player.eliminated) {
+        tile.classList.add("eliminated");
+      }
 
-    if (player.winner) {
-      tile.classList.add("winner");
-    }
+      if (player.winner) {
+        tile.classList.add("winner");
+      }
 
-    tile.innerHTML = `
-      <div class="name">${player.name}</div>
-      <div class="points">${player.points}</div>
-    `;
+      tile.innerHTML = `
+        <div class="name">${player.name}</div>
+        <div class="points">${player.points}</div>
+      `;
 
-    board.appendChild(tile);
-  });
+      board.appendChild(tile);
+
+    });
+
+  } catch (err) {
+
+    console.log("Leaderboard load error:", err);
+
+  }
 }
 
-loadLeaderboard();
 
-/* ===== COUNTDOWN CLOCK ===== */
+/* ===== AUTO REFRESH EVERY 10 SECONDS ===== */
+
+loadLeaderboard();
+setInterval(loadLeaderboard, 10000);
+
+
+
+/* ===== COUNTDOWN TIMER ===== */
 
 function startCountdown() {
 
-  const targetDate = new Date("2026-04-01T20:00:00");
+  const target = new Date("2026-04-01T20:00:00");
 
-  function updateClock() {
+  function updateCountdown() {
 
     const now = new Date();
-    const diff = targetDate - now;
+    const diff = target - now;
 
     if (diff <= 0) {
-      document.getElementById("countdown").innerText = "Event Live!";
+      document.getElementById("countdown").innerText = "LIVE";
       return;
     }
 
-    const days = Math.floor(diff / (1000*60*60*24));
-    const hours = Math.floor((diff / (1000*60*60)) % 24);
-    const minutes = Math.floor((diff / (1000*60)) % 60);
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
     document.getElementById("countdown").innerText =
       `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
 
-  updateClock();
-  setInterval(updateClock, 1000);
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 }
 
 startCountdown();
