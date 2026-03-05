@@ -34,8 +34,12 @@ startCountdown();
 // =========================
 
 const board = document.getElementById("leaderboard");
-let tileMap = {}; // keeps track of tiles by player ID
+let tileMap = {};
 
+
+// =========================
+// SORT PLAYERS
+// =========================
 
 function sortPlayers(data) {
 
@@ -63,20 +67,20 @@ function createTile(player) {
   const tile = document.createElement("div");
   tile.className = "player";
   tile.dataset.id = player.id;
+  tile.dataset.open = "false";
 
   tile.textContent = player.id;
 
-  if (player.score === 0) tile.classList.add("zero-score");
-  if (player.eliminated) tile.classList.add("eliminated");
-
   tile.addEventListener("click", () => {
+
+    tile.dataset.open = "true";
 
     tile.innerHTML = `
       <div>${player.id}</div>
       <div style="font-size:22px;margin-top:10px;">
         ${player.name}
       </div>
-      <div style="font-size:18px;margin-top:5px;">
+      <div class="score" style="font-size:18px;margin-top:5px;">
         ${player.score.toLocaleString()}
       </div>
     `;
@@ -84,7 +88,10 @@ function createTile(player) {
   });
 
   tile.addEventListener("mouseleave", () => {
+
+    tile.dataset.open = "false";
     tile.textContent = player.id;
+
   });
 
   return tile;
@@ -92,7 +99,7 @@ function createTile(player) {
 
 
 // =========================
-// UPDATE BOARD (FLIP)
+// UPDATE BOARD
 // =========================
 
 function updateBoard(data) {
@@ -116,6 +123,18 @@ function updateBoard(data) {
       board.appendChild(tile);
     }
 
+    // update score if tile is open
+    if (tile.dataset.open === "true") {
+
+      const scoreElement = tile.querySelector(".score");
+
+      if (scoreElement) {
+        scoreElement.textContent = player.score.toLocaleString();
+      }
+
+    }
+
+    // update color states
     if (player.score === 0) tile.classList.add("zero-score");
     else tile.classList.remove("zero-score");
 
@@ -125,11 +144,13 @@ function updateBoard(data) {
   });
 
 
+  // reorder tiles
   players.forEach(player => {
     board.appendChild(tileMap[player.id]);
   });
 
 
+  // animate movement
   const tiles = board.querySelectorAll(".player");
 
   tiles.forEach(tile => {
