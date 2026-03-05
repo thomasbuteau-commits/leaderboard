@@ -31,14 +31,14 @@ body {
 }
 
 /* Leaderboard grid */
-/* Leaderboard grid */
 #leaderboard {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;           /* smaller gap between tiles */
-  max-width: 800px;    /* narrower grid to centralize */
-  margin: 0 auto;      /* center the grid */
-  padding: 20px 0;     /* top and bottom padding for breathing space */
+  grid-template-columns: repeat(4, auto); /* columns sized by content */
+  gap: 8px;                               /* smaller gap between tiles */
+  max-width: 800px;                        /* restrict overall grid width */
+  margin: 0 auto;                          /* center the grid horizontally */
+  justify-content: center;                  /* extra centering if columns are narrow */
+  padding: 20px 0;                         /* breathing space top/bottom */
 }
 
 /* Tiles */
@@ -46,18 +46,17 @@ body {
   background: #002b1a;
   border: 2px solid #00ff66;
   border-radius: 6px;
-  padding: 10px;
+  padding: 10px 16px;                       /* add more horizontal padding */
   font-size: 22px;
-  font-weight: bold;      
+  font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 50px;
-  width: 100%;         /* tile fills its grid cell */
   box-shadow: 0 0 8px #00ff6644;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
-  white-space: nowrap;
+  white-space: nowrap;                       /* keep text on one line */
 }
 
 /* Hover glow */
