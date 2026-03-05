@@ -1,17 +1,52 @@
-// ===== COUNTDOWN =====
+async function loadLeaderboard() {
+
+  const response = await fetch("leaderboard.json");
+  const data = await response.json();
+
+  const board = document.getElementById("leaderboard");
+  board.innerHTML = "";
+
+  data.players.forEach(player => {
+
+    const tile = document.createElement("div");
+    tile.className = "tile";
+
+    if (player.revealed) {
+      tile.classList.add("revealed");
+    }
+
+    if (player.eliminated) {
+      tile.classList.add("eliminated");
+    }
+
+    if (player.winner) {
+      tile.classList.add("winner");
+    }
+
+    tile.innerHTML = `
+      <div class="name">${player.name}</div>
+      <div class="points">${player.points}</div>
+    `;
+
+    board.appendChild(tile);
+  });
+}
+
+loadLeaderboard();
+
+/* ===== COUNTDOWN CLOCK ===== */
 
 function startCountdown() {
 
-  const countdownElement = document.getElementById("countdown");
-  const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
+  const targetDate = new Date("2026-04-01T20:00:00");
 
-  setInterval(() => {
+  function updateClock() {
 
-    const now = new Date().getTime();
+    const now = new Date();
     const diff = targetDate - now;
 
     if (diff <= 0) {
-      countdownElement.textContent = "TIME'S UP";
+      document.getElementById("countdown").innerText = "Event Live!";
       return;
     }
 
@@ -20,103 +55,12 @@ function startCountdown() {
     const minutes = Math.floor((diff / (1000*60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    countdownElement.textContent =
-      `${days}D ${hours}H ${minutes}M ${seconds}S`;
+    document.getElementById("countdown").innerText =
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
 
-  },1000);
-
+  updateClock();
+  setInterval(updateClock, 1000);
 }
 
 startCountdown();
-
-
-
-/* ===== LOAD LEADERBOARD ===== */
-
-async function loadLeaderboard(){
-
-  const response = await fetch('./data.json?t=' + Date.now());
-  const data = await response.json();
-
-  /* SORT */
-
-  data.sort((a,b)=>{
-
-    if(a.eliminated && !b.eliminated) return 1;
-    if(!a.eliminated && b.eliminated) return -1;
-
-    if(b.score !== a.score) return b.score - a.score;
-
-    return a.id.localeCompare(b.id);
-
-  });
-
-  const board = document.getElementById("leaderboard");
-  board.innerHTML = "";
-
-  /* CALCULATE TOTAL */
-
-  let total = 0;
-
-  data.forEach(player => {
-
-    total += player.score;
-
-    const tile = document.createElement("div");
-    tile.className = "player";
-
-    if(player.score === 0){
-      tile.classList.add("zero-score");
-    }
-
-    if(player.eliminated){
-      tile.classList.add("eliminated");
-    }
-
-    tile.textContent = player.id;
-
-    /* CLICK REVEAL */
-
-    tile.addEventListener("click", ()=>{
-
-      tile.classList.add("open");
-
-      tile.innerHTML =
-      `<div class="scoreText">
-        ${player.name} 
-        <span class="won">₩</span>${player.score.toLocaleString()}
-      </div>`;
-
-    });
-
-    /* AUTO CLOSE */
-
-    tile.addEventListener("mouseleave", ()=>{
-
-      tile.classList.remove("open");
-      tile.textContent = player.id;
-
-    });
-
-    board.appendChild(tile);
-
-  });
-
-  /* UPDATE PRIZE POOL */
-
-  const prize = document.getElementById("prizePool");
-
-  if(prize){
-    prize.textContent =
-      `TOTAL PRIZE POOL : ₩${total.toLocaleString()}`;
-  }
-
-}
-
-/* INITIAL LOAD */
-
-loadLeaderboard();
-
-/* AUTO REFRESH EVERY 10s */
-
-setInterval(loadLeaderboard,10000);
