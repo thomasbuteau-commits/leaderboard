@@ -1,152 +1,121 @@
-body{
-background:black;
-color:#00ff9c;
-font-family:monospace;
-text-align:center;
-margin:0;
-padding:20px;
+body {
+  background-color: black;
+  color: #00ff66;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
 }
 
-/* TITLE */
-
-.title{
-font-size:30px;
-letter-spacing:4px;
-margin-bottom:4px;
-animation:titleFlicker 6s infinite;
+/* ===== TITLE ===== */
+.title {
+  font-size: 50px; /* smaller than before */
+  letter-spacing: 6px;
+  margin-bottom: 10px;
 }
 
-/* title flicker */
-
-@keyframes titleFlicker{
-0%{opacity:1}
-92%{opacity:1}
-94%{opacity:.4}
-96%{opacity:1}
-98%{opacity:.5}
-100%{opacity:1}
+.prep {
+  font-size: 28px;
+  display: inline-block;
+  animation: flicker 3s infinite;
 }
 
-/* COUNTDOWN */
-
-#countdown{
-font-size:16px;
-margin-bottom:18px;
-color:#00ff9c;
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 15px #00ff66; }
+  20%, 24%, 55% { opacity: 0.7; text-shadow: 0 0 5px #00ff66; }
 }
 
-/* LEADERBOARD GRID */
-
-#leaderboard{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:12px;
-max-width:1100px;
-margin:auto;
+/* ===== COUNTDOWN ===== */
+.countdown {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px #00ff66;
 }
 
-/* TILE */
+/* ===== LEADERBOARD GRID ===== */
+#leaderboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 1200px;
+  margin: auto;
+}
 
-.tile{
-
-background:#002b1a;
-
-border:2px solid #00ff9c;
-
-border-radius:6px;
-
-padding:10px 14px;
-
-height:48px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-box-shadow:0 0 10px #00ff9c40;
-
-transition:box-shadow .25s;
-
-font-size:16px;
-
+/* ===== TILES ===== */
+.tile {
+  background-color: #002b1a;
+  border: 2px solid #00ff66;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 55px;
+  box-shadow: 0 0 10px #00ff6644;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 /* hover glow */
-
-.tile:hover{
-box-shadow:0 0 28px #00ff9c;
+.tile:hover {
+  box-shadow: 0 0 30px #00ff66;
 }
 
-/* eliminated */
-
-.eliminated{
-
-background:#2b0000;
-
-border-color:#ff2c2c;
-
-color:#ff6a6a;
-
-box-shadow:0 0 10px #ff2c2c40;
-
+/* eliminated tile */
+.eliminated {
+  background-color: #2b0000;
+  border-color: #ff2c2c;
+  color: #ff6a6a;
+  box-shadow: 0 0 10px #ff2c2c55;
 }
 
-/* eliminated hover */
-
-.eliminated:hover{
-box-shadow:0 0 28px #ff2c2c;
+.eliminated:hover {
+  box-shadow: 0 0 20px #ff2c2c;
 }
 
-/* winner */
-
-.winner{
-border-color:#00ff9c;
-box-shadow:0 0 20px #00ff9c;
+/* winner W flicker */
+.winner .name::after {
+  content: " W";
+  margin-left: 6px;
+  color: #00ff66;
+  animation: winFlicker 2s infinite;
 }
 
-/* W flicker */
-
-.winner .name::after{
-
-content:" W";
-
-margin-left:6px;
-
-color:#00ff9c;
-
-animation:winFlicker 2s infinite;
-
+@keyframes winFlicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  60% { opacity: 1; }
+  70% { opacity: 0.2; }
+  100% { opacity: 1; }
 }
 
-@keyframes winFlicker{
-0%{opacity:1}
-50%{opacity:.3}
-60%{opacity:1}
-70%{opacity:.2}
-100%{opacity:1}
+/* name + points on tile */
+.name, .points {
+  font-size: 16px; /* smaller font to fit reveal side */
 }
 
-/* name */
-
-.name{
-font-size:16px;
-letter-spacing:1px;
+/* zero-score red pulse */
+@keyframes redPulse {
+  0% { box-shadow: 0 0 10px #ff0033; }
+  50% { box-shadow: 0 0 40px #ff0033; }
+  100% { box-shadow: 0 0 10px #ff0033; }
 }
 
-/* score */
-
-.points{
-font-size:16px;
+.zero-score {
+  border-color: #ff0033;
+  color: #ff0033;
+  animation: redPulse 2.5s infinite;
 }
 
-/* responsive */
-
-@media(max-width:900px){
-
-#leaderboard{
-grid-template-columns:repeat(2,1fr);
+.zero-score:hover {
+  box-shadow: 0 0 30px #ff0033;
+  color: white;
 }
 
+@media (max-width: 900px) {
+  #leaderboard { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 500px) {
+  #leaderboard { grid-template-columns: repeat(1, 1fr); }
 }
