@@ -1,227 +1,225 @@
-/* ======================
-PAGE
-====================== */
-
-body{
-margin:0;
-background:black;
-font-family:monospace;
-color:#00ff9c;
-overflow:hidden;
+body {
+  background-color: black;
+  font-family: 'Courier New', monospace;
+  color: #00ff66;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
-/* ======================
-GRID
-====================== */
+/* ===== TITLE ===== */
 
-#leaderboard{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:20px;
-padding:40px;
+.title {
+  font-size: 70px;
+  margin-top: 40px;
+  letter-spacing: 8px;
+  text-shadow: 0 0 20px #00ff66;
 }
 
-/* ======================
-TILE
-====================== */
-
-.tile{
-position:relative;
-height:120px;
-perspective:1000px;
+.prep {
+  font-size: 32px;
+  letter-spacing: 6px;
+  display: inline-block;
+  animation: flicker 3s infinite;
 }
 
-/* flip container */
-
-.tile-inner{
-position:relative;
-width:100%;
-height:100%;
-transition:transform .7s;
-transform-style:preserve-3d;
+@keyframes flicker {
+  0%,18%,22%,25%,53%,57%,100% {
+    opacity:1;
+    text-shadow:0 0 15px #00ff66;
+  }
+  20%,24%,55% {
+    opacity:0.7;
+    text-shadow:0 0 5px #00ff66;
+  }
 }
 
-.tile.flipped .tile-inner{
-transform:rotateY(180deg);
+/* ===== COUNTDOWN ===== */
+
+.countdown {
+  font-size: 36px;
+  margin-top: 20px;
+  text-shadow: 0 0 15px #00ff66;
+  letter-spacing: 3px;
 }
 
-/* ======================
-FRONT + BACK
-====================== */
+/* ===== LEADERBOARD GRID ===== */
 
-.tile-front,
-.tile-back{
-
-position:absolute;
-width:100%;
-height:100%;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-border-radius:10px;
-
-backface-visibility:hidden;
-
-/* GLASS TILE LOOK */
-
-background:rgba(0,0,0,.65);
-backdrop-filter:blur(6px);
-
-border:2px solid rgba(0,255,150,.6);
-
-box-shadow:
-0 0 10px rgba(0,255,150,.4),
-inset 0 0 10px rgba(0,255,150,.3);
-
-overflow:hidden;
+#leaderboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  width: 80%;
+  margin: 60px auto;
 }
 
-/* front */
+/* ===== PLAYER TILE ===== */
 
-.tile-front{
-font-size:48px;
+.player {
+  position: relative;
+  font-size: 48px;
+  padding: 30px 0;
+  border: 2px solid #00ff66;
+  box-shadow: 0 0 25px #00ff66;
+  cursor: pointer;
+  overflow: hidden;
+
+  transition: transform 0.6s ease;
 }
 
-/* back */
+/* Hover reveal */
 
-.tile-back{
-transform:rotateY(180deg);
-font-size:32px;
+.player:hover {
+  background-color: black;
+  color: #00ff66;
+  box-shadow: 0 0 60px #00ff66;
 }
 
-/* ======================
-WON FLICKER
-====================== */
+/* ===== REVEALED TILE LOOK ===== */
 
-.won{
-
-color:#00ff9c;
-
-text-shadow:
-0 0 8px #00ff9c,
-0 0 20px #00ff9c,
-0 0 40px #00ff9c;
-
-animation:wonflicker 2s infinite;
+.player.revealed {
+  background-color: black;
+  color: #00ff66;
+  box-shadow: 0 0 40px #00ff66;
 }
 
-@keyframes wonflicker{
+/* ===== ZERO SCORE RED PULSE ===== */
 
-0%{opacity:1}
-5%{opacity:.2}
-8%{opacity:1}
-12%{opacity:.3}
-20%{opacity:1}
-60%{opacity:1}
-61%{opacity:.2}
-62%{opacity:1}
-
+@keyframes redPulse {
+  0% { box-shadow:0 0 10px #ff0033; }
+  50% { box-shadow:0 0 40px #ff0033; }
+  100% { box-shadow:0 0 10px #ff0033; }
 }
 
-/* ======================
-TOP SCORE PULSE
-====================== */
-
-.tile.rank1{
-
-animation:toppulse 3s infinite;
-
+.zero-score {
+  border-color:#ff0033 !important;
+  color:#ff0033 !important;
+  animation:redPulse 2.5s infinite;
 }
 
-@keyframes toppulse{
-
-0%{
-
-box-shadow:
-0 0 10px rgba(0,255,150,.5),
-0 0 20px rgba(0,255,150,.5);
-
+.zero-score:hover {
+  background-color:#ff0033;
+  color:white !important;
+  box-shadow:0 0 60px #ff0033;
 }
 
-50%{
+/* ===== ELIMINATED ===== */
 
-box-shadow:
-0 0 25px rgba(0,255,150,1),
-0 0 50px rgba(0,255,150,1);
-
+.eliminated {
+  opacity:0.3;
 }
 
-100%{
-
-box-shadow:
-0 0 10px rgba(0,255,150,.5),
-0 0 20px rgba(0,255,150,.5);
-
+.eliminated::after {
+  content:"ELIMINATED";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:#ff0033;
+  font-size:20px;
+  font-weight:bold;
+  letter-spacing:3px;
 }
 
+/* ===== SCORE CHANGE EFFECTS ===== */
+
+@keyframes scoreUpFlash {
+  0% { box-shadow:0 0 20px #00ff66; }
+  50% { box-shadow:0 0 60px #00ff66; }
+  100% { box-shadow:0 0 20px #00ff66; }
 }
 
-/* ======================
-SCAN LINE
-====================== */
-
-.tile::after{
-
-content:"";
-
-position:absolute;
-
-left:0;
-width:100%;
-height:2px;
-
-background:rgba(0,255,150,.3);
-
-animation:scanline 5s linear infinite;
-
+@keyframes scoreDownFlash {
+  0% { box-shadow:0 0 20px #ff0033; }
+  50% { box-shadow:0 0 60px #ff0033; }
+  100% { box-shadow:0 0 20px #ff0033; }
 }
 
-@keyframes scanline{
-
-0%{top:0}
-100%{top:100%}
-
+.score-up {
+  animation:scoreUpFlash 1s ease;
 }
 
-/* ======================
-CCTV FLICKER
-====================== */
-
-body::after{
-
-content:"";
-
-position:fixed;
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-pointer-events:none;
-
-background:rgba(255,255,255,.03);
-
-animation:cctv 9s infinite;
-
+.score-down {
+  animation:scoreDownFlash 1s ease;
 }
 
-@keyframes cctv{
+/* ===== LEADER GLOW ===== */
 
-0%{opacity:0}
+.rank1 {
+  animation:leaderPulse 3s infinite;
+}
 
-95%{opacity:0}
+@keyframes leaderPulse {
+  0% { box-shadow:0 0 25px #00ff66; }
+  50% { box-shadow:0 0 90px #00ff66; }
+  100% { box-shadow:0 0 25px #00ff66; }
+}
 
-96%{opacity:.4}
+/* ===== WON SYMBOL FLICKER ===== */
 
-97%{opacity:0}
+.won {
+  animation:wonFlicker 2.5s infinite;
+}
 
-98%{opacity:.2}
+@keyframes wonFlicker {
+  0%,18%,22%,25%,53%,57%,100% {
+    opacity:1;
+    text-shadow:0 0 10px #00ff66,0 0 20px #00ff66;
+  }
+  20%,24%,55% {
+    opacity:0.4;
+    text-shadow:0 0 5px #00ff66;
+  }
+}
 
-99%{opacity:0}
+/* ===== TERMINAL SCAN LINE ===== */
 
-100%{opacity:0}
+.player::after {
+  content:"";
+  position:absolute;
+  left:0;
+  width:100%;
+  height:2px;
+  background:rgba(0,255,102,0.25);
+  animation:scanMove 6s linear infinite;
+}
 
+@keyframes scanMove {
+  0% { top:0; }
+  100% { top:100%; }
+}
+
+/* ===== CCTV SCREEN FLICKER ===== */
+
+body::after {
+  content:"";
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  background:rgba(255,255,255,0.03);
+  animation:cctvFlicker 12s infinite;
+}
+
+@keyframes cctvFlicker {
+  0%,96%,100% { opacity:0; }
+  97% { opacity:0.3; }
+  98% { opacity:0; }
+  99% { opacity:0.2; }
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width:900px) {
+  #leaderboard {
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media (max-width:500px) {
+  #leaderboard {
+    grid-template-columns:repeat(1,1fr);
+  }
 }
