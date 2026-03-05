@@ -9,12 +9,12 @@ body {
 
 /* Title */
 .title {
-  font-size: 32px;
+  font-size: 28px;
   letter-spacing: 4px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .prep {
-  font-size: 20px;
+  font-size: 18px;
   display: inline-block;
   animation: flicker 3s infinite;
 }
@@ -25,7 +25,7 @@ body {
 
 /* Countdown */
 #countdown {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 20px;
   color: #00ff66;
 }
@@ -34,30 +34,31 @@ body {
 #leaderboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 20px; /* more spacing between tiles */
   max-width: 1200px;
   margin: auto;
 }
 
-/* Tile styling */
+/* Tiles */
 .tile {
   background: #002b1a;
   border: 2px solid #00ff66;
   border-radius: 6px;
-  padding: 10px;
-  font-size: 16px;
+  padding: 8px 10px;
+  font-size: 14px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  box-shadow: 0 0 10px #00ff6644;
+  height: 40px; /* shorter height */
+  box-shadow: 0 0 8px #00ff6644;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
+  white-space: nowrap;
 }
 
 /* Hover glow */
 .tile:hover {
-  box-shadow: 0 0 30px #00ff66;
+  box-shadow: 0 0 25px #00ff66;
 }
 
 /* Eliminated tile */
@@ -65,30 +66,17 @@ body {
   background: #2b0000;
   border-color: #ff2c2c;
   color: #ff6a6a;
-  box-shadow: 0 0 10px #ff2c2c55;
+  box-shadow: 0 0 8px #ff2c2c55;
 }
 .eliminated:hover {
   box-shadow: 0 0 20px #ff2c2c;
 }
 
-/* Winner flicker */
-.winner::after {
-  content: " W";
-  margin-left: 5px;
-  color: #00ff66;
-  animation: winFlicker 2s infinite;
-}
-@keyframes winFlicker {
-  0%, 60%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-  70% { opacity: 0.2; }
-}
-
 /* Zero score red pulse */
 @keyframes redPulse {
-  0% { box-shadow: 0 0 10px #ff0033; }
-  50% { box-shadow: 0 0 40px #ff0033; }
-  100% { box-shadow: 0 0 10px #ff0033; }
+  0% { box-shadow: 0 0 8px #ff0033; }
+  50% { box-shadow: 0 0 25px #ff0033; }
+  100% { box-shadow: 0 0 8px #ff0033; }
 }
 .zero-score {
   border-color: #ff0033 !important;
@@ -96,8 +84,8 @@ body {
   animation: redPulse 2.5s infinite;
 }
 
-/* Name and points when revealed */
+/* Reveal name + score on one line */
 .reveal {
-  font-size: 14px;
+  font-size: 12px; /* smaller to fit on one line */
   white-space: nowrap;
 }
