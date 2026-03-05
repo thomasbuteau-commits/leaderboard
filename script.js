@@ -35,13 +35,11 @@ function loadLeaderboard() {
       const board = document.getElementById('leaderboard');
       board.innerHTML = "";
 
-      const maxScore = Math.max(...data.map(d=>d.score));
       data.forEach(player => {
         const tile = document.createElement('div');
         tile.className = 'tile';
         if(player.score === 0) tile.classList.add('zero-score');
         if(player.eliminated) tile.classList.add('eliminated');
-        if(player.score === maxScore && !player.eliminated) tile.classList.add('winner');
 
         tile.textContent = player.id;
 
