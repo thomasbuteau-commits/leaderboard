@@ -1,12 +1,15 @@
 // Countdown Timer
 
 function startCountdown() {
+
   const countdownElement = document.getElementById("countdown");
+
   const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
 
   setInterval(() => {
 
     const now = new Date().getTime();
+
     const difference = targetDate - now;
 
     if (difference <= 0) {
@@ -14,86 +17,125 @@ function startCountdown() {
       return;
     }
 
-    const days = Math.floor(difference / (1000*60*60*24));
-    const hours = Math.floor((difference / (1000*60*60)) % 24);
-    const minutes = Math.floor((difference / (1000*60)) % 60);
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((difference / (1000 * 60)) % 60);
     const seconds = Math.floor((difference / 1000) % 60);
 
     countdownElement.textContent =
       `${days}D ${hours}H ${minutes}M ${seconds}S`;
 
-  },1000);
+  }, 1000);
+
 }
 
 startCountdown();
 
 
 
-/* ===== LEADERBOARD ===== */
+/* ============================= */
+/* LEADERBOARD + AUTO REFRESH   */
+/* ============================= */
+
+let previousScores = {};
 
 function loadLeaderboard() {
 
-fetch('./data.json?t=' + new Date().getTime())
-.then(response => response.json())
-.then(data => {
+  fetch('./data.json?t=' + new Date().getTime())
 
-data.sort((a,b)=>{
+  .then(response => response.json())
 
-if(a.eliminated && !b.eliminated) return 1;
-if(!a.eliminated && b.eliminated) return -1;
+  .then(data => {
 
-if(b.score !== a.score) return b.score - a.score;
+    /* ===== TOTAL POINTS ===== */
 
-return a.id.localeCompare(b.id);
+    let total = 0;
 
-});
+    data.forEach(player => {
+      total += player.score || 0;
+    });
 
-const board = document.getElementById('leaderboard');
-board.innerHTML="";
+    const totalBar = document.getElementById("totalPool");
 
-data.forEach(player=>{
+    if (totalBar) {
+      totalBar.textContent = "₩" + total.toLocaleString();
+    }
 
-const row = document.createElement('div');
-row.className='player';
+    /* ===== SORT ===== */
 
-row.textContent=player.id;
+    data.sort((a, b) => {
 
-if(player.score===0){
-row.classList.add("zero-score");
-}
+      if (a.eliminated && !b.eliminated) return 1;
+      if (!a.eliminated && b.eliminated) return -1;
 
-if(player.eliminated===true){
-row.classList.add("eliminated");
-}
+      if (b.score !== a.score) return b.score - a.score;
 
-row.addEventListener('click',()=>{
+      return a.id.localeCompare(b.id);
 
-row.classList.add("show-score");
+    });
 
-row.innerHTML=`
-<div class="reveal">
-<span class="initials">${player.name}</span>
-<span class="score"><span class="won">₩</span>${player.score.toLocaleString()}</span>
-</div>
-`;
+    const board = document.getElementById('leaderboard');
 
-});
+    board.innerHTML = "";
 
-/* close on mouse leave */
+    data.forEach(player => {
 
-row.addEventListener('mouseleave',()=>{
-row.classList.remove("show-score");
-row.textContent=player.id;
-});
+      const row = document.createElement('div');
 
-board.appendChild(row);
+      row.className = 'player';
 
-});
+      row.textContent = player.id;
 
-})
-.catch(error=>{
-console.error("Error loading leaderboard:",error);
-});
+      if (player.score === 0) {
+        row.classList.add("zero-score");
+      }
+
+      if (player.eliminated === true) {
+        row.classList.add("eliminated");
+      }
+
+      /* ===== SCORE CHANGE EFFECT ===== */
+
+      if (previousScores[player.id] !== undefined &&
+          player.score > previousScores[player.id]) {
+
+        row.classList.add("score-up");
+
+      }
+
+      previousScores[player.id] = player.score;
+
+      /* ===== TILE CLICK ===== */
+
+      row.addEventListener('click', () => {
+
+        row.classList.add("open");
+
+        row.innerHTML = `
+          <div>${player.name} <span class="score">₩${player.score.toLocaleString()}</span></div>
+        `;
+
+      });
+
+      row.addEventListener('mouseleave', () => {
+
+        row.classList.remove("open");
+
+        row.textContent = player.id;
+
+      });
+
+      board.appendChild(row);
+
+    });
+
+  })
+
+  .catch(error => {
+
+    console.error("Error loading leaderboard:", error);
+
+  });
 
 }
 
@@ -101,6 +143,6 @@ console.error("Error loading leaderboard:",error);
 
 loadLeaderboard();
 
-/* auto refresh every 10 seconds */
+/* refresh every 10 seconds */
 
-setInterval(loadLeaderboard,10000);
+setInterval(loadLeaderboard, 10000);
