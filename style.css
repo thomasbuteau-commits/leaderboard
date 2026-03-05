@@ -1,68 +1,109 @@
 /* ===== PAGE ===== */
+
 body {
-  background-color: #000;
-  color: white;
+  background: #000;
+  color: #fff;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
+
 
 /* ===== TITLE ===== */
+
 #title {
-  font-size: 42px; /* lowered from giant size */
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 5px; /* tighter spacing above countdown */
+  font-size: 36px;
+  margin-top: 8px;
+  margin-bottom: 2px;
+  letter-spacing: 2px;
 }
+
 
 /* ===== COUNTDOWN ===== */
+
 #countdown {
-  font-size: 28px;
-  margin-bottom: 15px;
+  font-size: 22px;
+  margin-bottom: 12px;
 }
+
 
 /* ===== GRID ===== */
+
 #leaderboard {
+  width: 85%;
+  margin: auto;
+
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  width: 80%;
-  margin: auto;
+  gap: 12px;
 }
 
-/* ===== PLAYER TILE ===== */
+
+/* ===== TILE ===== */
+
 .tile {
-  background-color: black;
-  border: 2px solid #00ff88;
-  padding: 20px;
-  font-size: 22px;
-  transition: all 0.25s ease;
+  background: #0b0b0b;
+
+  border: 3px solid #00ff66;
+  border-radius: 8px;
+
+  height: 85px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  transition: transform .15s ease, box-shadow .15s ease;
 }
 
-/* Hover glow ONLY (no color change) */
+
+/* ===== HOVER GLOW ===== */
+
 .tile:hover {
-  box-shadow: 0 0 20px #00ff88;
   transform: scale(1.05);
+  box-shadow: 0 0 25px #00ff66;
 }
 
-/* ===== REVEALED ===== */
-.tile.revealed {
-  background-color: black;
-  border-color: #00ff88;
+.tile:active {
+  transform: scale(1.03);
+  box-shadow: 0 0 35px #00ff66;
 }
+
+
+/* ===== PLAYER NAME ===== */
+
+.name {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+
+/* ===== SCORE ===== */
+
+.points {
+  font-size: 20px;
+}
+
 
 /* ===== ELIMINATED ===== */
+
 .tile.eliminated {
   border-color: red;
-  opacity: 0.5;
+  box-shadow: 0 0 10px red;
+  opacity: .7;
 }
 
+
 /* ===== WINNER FLICKER ===== */
+
 @keyframes flicker {
   0% { opacity: 1; }
-  50% { opacity: .4; }
+  50% { opacity: .35; }
   100% { opacity: 1; }
 }
 
-.winner {
+.tile.winner {
   animation: flicker 1s infinite;
 }
