@@ -19,76 +19,72 @@ function startCountdown() {
 
     countdownElement.textContent =
       `${days}D ${hours}H ${minutes}M ${seconds}S`;
-
   }, 1000);
 }
 startCountdown();
-
 
 // ================== Leaderboard ==================
 const board = document.getElementById('leaderboard');
 
 function loadLeaderboard() {
-  fetch('./data.json')
+  // Add timestamp to prevent caching
+  fetch('./data.json?timestamp=' + new Date().getTime())
     .then(response => response.json())
     .then(data => {
 
-      // Sort logic:
-      // 1. Non-eliminated first
-      // 2. Highest score first
+      // Sort logic: non-eliminated first, then by score descending, then ID ascending
       data.sort((a, b) => {
-        // Eliminated go to the bottom
         if (a.eliminated && !b.eliminated) return 1;
         if (!a.eliminated && b.eliminated) return -1;
-
-        // Then sort by score descending
         if (b.score !== a.score) return b.score - a.score;
-
-        // If score equal, sort by ID ascending
         return a.id.localeCompare(b.id);
       });
 
-      board.innerHTML = "";
-
+      // Create or update tiles
       data.forEach(player => {
+        let tile = document.getElementById(player.id);
+        if (!tile) {
+          tile = document.createElement('div');
+          tile.id = player.id;
+          tile.className = 'player';
+          board.appendChild(tile);
 
-        const row = document.createElement('div');
-        row.className = 'player';
-        row.textContent = player.id;
+          // Add click behavior for score reveal
+          tile.addEventListener('click', () => {
+            tile.innerHTML = `
+              <div>${player.id}</div>
+              <div style="font-size:22px; margin-top:10px;">
+                ${player.name}
+              </div>
+              <div style="font-size:18px; margin-top:5px;">
+                ${player.score.toLocaleString()}
+              </div>
+            `;
+          });
 
-        if (player.score === 0) {
-          row.classList.add("zero-score");
+          tile.addEventListener('mouseleave', () => {
+            tile.textContent = player.id;
+          });
         }
 
-        if (player.eliminated === true) {
-          row.classList.add("eliminated");
+        // Update classes
+        tile.classList.toggle("zero-score", player.score === 0);
+        tile.classList.toggle("eliminated", player.eliminated);
+
+        // Update tile content if not open
+        if (!tile.classList.contains("open")) {
+          tile.textContent = player.id;
         }
+      });
 
-        row.addEventListener('click', () => {
-          row.innerHTML = `
-            <div>${player.id}</div>
-            <div style="font-size:22px; margin-top:10px;">
-              ${player.name}
-            </div>
-            <div style="font-size:18px; margin-top:5px;">
-              ${player.score.toLocaleString()}
-            </div>
-          `;
-        });
-
-        // Auto close when mouse leaves
-        row.addEventListener('mouseleave', () => {
-          row.textContent = player.id;
-        });
-
-        board.appendChild(row);
-
+      // Reorder tiles in DOM according to sorted data
+      data.forEach(player => {
+        const tile = document.getElementById(player.id);
+        board.appendChild(tile);
       });
 
     })
-    .catch(error => {
-      console.error("Error loading leaderboard:", error);
-    });
+    .catch(err => console.error("Error loading leaderboard:", err));
 }
 
 // Initial load
