@@ -1,5 +1,5 @@
 body {
-  background-color: black;
+  background: black;
   color: #00ff66;
   font-family: 'Courier New', monospace;
   text-align: center;
@@ -7,32 +7,30 @@ body {
   padding: 20px;
 }
 
-/* ===== TITLE ===== */
+/* Title */
 .title {
-  font-size: 50px;
-  letter-spacing: 6px;
-  margin-bottom: 10px;
+  font-size: 32px;
+  letter-spacing: 4px;
+  margin-bottom: 5px;
 }
-
 .prep {
-  font-size: 28px;
+  font-size: 20px;
   display: inline-block;
   animation: flicker 3s infinite;
 }
-
 @keyframes flicker {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 15px #00ff66; }
-  20%, 24%, 55% { opacity: 0.7; text-shadow: 0 0 5px #00ff66; }
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.7; }
 }
 
-/* ===== COUNTDOWN ===== */
-.countdown {
-  font-size: 24px;
+/* Countdown */
+#countdown {
+  font-size: 18px;
   margin-bottom: 20px;
-  text-shadow: 0 0 15px #00ff66;
+  color: #00ff66;
 }
 
-/* ===== LEADERBOARD GRID ===== */
+/* Leaderboard grid */
 #leaderboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -41,75 +39,65 @@ body {
   margin: auto;
 }
 
-/* ===== TILES ===== */
+/* Tile styling */
 .tile {
-  background-color: #002b1a;
+  background: #002b1a;
   border: 2px solid #00ff66;
   border-radius: 6px;
-  padding: 12px;
-  font-size: 18px;
+  padding: 10px;
+  font-size: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 55px;
+  height: 50px;
   box-shadow: 0 0 10px #00ff6644;
   cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  user-select: none;
+  transition: box-shadow 0.3s ease;
 }
 
-/* hover glow */
+/* Hover glow */
 .tile:hover {
   box-shadow: 0 0 30px #00ff66;
 }
 
-/* eliminated */
+/* Eliminated tile */
 .eliminated {
-  background-color: #2b0000;
+  background: #2b0000;
   border-color: #ff2c2c;
   color: #ff6a6a;
   box-shadow: 0 0 10px #ff2c2c55;
 }
-
 .eliminated:hover {
-  box-shadow: 0 0 30px #ff2c2c;
+  box-shadow: 0 0 20px #ff2c2c;
 }
 
-/* winner W flicker */
+/* Winner flicker */
 .winner::after {
   content: " W";
-  margin-left: 6px;
+  margin-left: 5px;
   color: #00ff66;
   animation: winFlicker 2s infinite;
 }
-
 @keyframes winFlicker {
-  0% { opacity: 1; }
+  0%, 60%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
-  60% { opacity: 1; }
   70% { opacity: 0.2; }
-  100% { opacity: 1; }
 }
 
-/* zero-score red pulse */
+/* Zero score red pulse */
 @keyframes redPulse {
   0% { box-shadow: 0 0 10px #ff0033; }
   50% { box-shadow: 0 0 40px #ff0033; }
   100% { box-shadow: 0 0 10px #ff0033; }
 }
-
 .zero-score {
-  border-color: #ff0033;
-  color: #ff0033;
+  border-color: #ff0033 !important;
+  color: #ff0033 !important;
   animation: redPulse 2.5s infinite;
 }
 
-.zero-score:hover {
-  box-shadow: 0 0 30px #ff0033;
-  color: white;
-}
-
-.name, .points {
-  font-size: 14px; /* smaller font to fit one line on reveal */
+/* Name and points when revealed */
+.reveal {
+  font-size: 14px;
   white-space: nowrap;
 }
