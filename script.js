@@ -19,20 +19,23 @@ function startCountdown() {
 
     countdownElement.textContent =
       `${days}D ${hours}H ${minutes}M ${seconds}S`;
+
   }, 1000);
 }
 startCountdown();
 
+
 // ================== Leaderboard ==================
 const board = document.getElementById('leaderboard');
-const tiles = {}; // Keep references to tile elements
+const tiles = {};
 
 function loadLeaderboard() {
-  fetch('./data.json?timestamp=' + new Date().getTime())
+
+  fetch('./data.json?cache=' + Date.now())
     .then(response => response.json())
     .then(data => {
 
-      // Sort: non-eliminated first, highest score first, then ID ascending
+      // Sort: non-eliminated first, highest score first, ID ascending
       data.sort((a, b) => {
         if (a.eliminated && !b.eliminated) return 1;
         if (!a.eliminated && b.eliminated) return -1;
@@ -41,49 +44,51 @@ function loadLeaderboard() {
       });
 
       data.forEach((player, index) => {
+
         let tile = tiles[player.id];
 
         if (!tile) {
-          // Create tile once
           tile = document.createElement('div');
-          tile.id = player.id;
           tile.className = 'player';
+          tile.dataset.id = player.id;
           tile.style.transition = 'all 0.5s ease';
-          board.appendChild(tile);
 
-          // Click to reveal score
+          board.appendChild(tile);
+          tiles[player.id] = tile;
+
+          // Click behavior uses CURRENT dataset values
           tile.addEventListener('click', () => {
-            tile.classList.add("open");
             tile.innerHTML = `
-              <div>${player.id}</div>
+              <div>${tile.dataset.id}</div>
               <div style="font-size:22px; margin-top:10px;">
-                ${player.name}
+                ${tile.dataset.name}
               </div>
               <div style="font-size:18px; margin-top:5px;">
-                ${player.score.toLocaleString()}
+                ${Number(tile.dataset.score).toLocaleString()}
               </div>
             `;
           });
 
-          // Auto close when mouse leaves
           tile.addEventListener('mouseleave', () => {
-            tile.classList.remove("open");
-            tile.textContent = player.id;
+            tile.textContent = tile.dataset.id;
           });
-
-          tiles[player.id] = tile;
         }
 
-        // Update classes
+        // Update dataset values EVERY refresh
+        tile.dataset.id = player.id;
+        tile.dataset.name = player.name;
+        tile.dataset.score = player.score;
+
+        // Update styling
         tile.classList.toggle("zero-score", player.score === 0);
         tile.classList.toggle("eliminated", player.eliminated);
 
-        // Update content if not open
-        if (!tile.classList.contains("open")) {
+        // If not open, keep it simple
+        if (!tile.querySelector("div:nth-child(2)")) {
           tile.textContent = player.id;
         }
 
-        // Reorder tile using flex/grid order
+        // Reorder smoothly
         tile.style.order = index;
       });
 
@@ -91,8 +96,5 @@ function loadLeaderboard() {
     .catch(err => console.error("Error loading leaderboard:", err));
 }
 
-// Initial load
 loadLeaderboard();
-
-// Auto-update every 10 seconds
 setInterval(loadLeaderboard, 10000);
