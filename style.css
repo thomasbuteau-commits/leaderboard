@@ -53,11 +53,6 @@ body {
   margin: 60px auto;
 }
 
-#leaderboard {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 /* ===== PLAYER TILE ===== */
 
 .player {
@@ -67,22 +62,19 @@ body {
   border: 2px solid #00ff66;
   box-shadow: 0 0 25px #00ff66;
   cursor: pointer;
-  transition: all 0.3s ease;
+
+  /* Smooth movement without flashing */
+  transition: transform 0.5s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-/* ===== PLAYER Transition ===== */
-.player {
-  transition: all 0.5s ease; /* Smooth position/size transitions */
-}
-
-/* Green hover */
+/* Hover */
 .player:hover {
   background-color: #00ff66;
   color: black;
   box-shadow: 0 0 50px #00ff66;
 }
 
-/* ===== ZERO SCORE (RED PULSE) ===== */
+/* ===== ZERO SCORE ===== */
 
 @keyframes redPulse {
   0% { box-shadow: 0 0 10px #ff0033; }
@@ -96,17 +88,10 @@ body {
   animation: redPulse 2.5s infinite;
 }
 
-/* 🔥 FIXED RED HOVER */
 .zero-score:hover {
   background-color: #ff0033;
-  color: white !important;  /* force readable text */
-  box-shadow: 0 0 60px #ff0033;
-}
-
-/* If opened and zero */
-.zero-score.open {
-  background-color: #ff0033;
   color: white !important;
+  box-shadow: 0 0 60px #ff0033;
 }
 
 /* ===== ELIMINATED ===== */
