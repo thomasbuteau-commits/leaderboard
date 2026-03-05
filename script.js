@@ -43,7 +43,7 @@ function loadLeaderboard() {
         tile.textContent = player.id;
 
         tile.addEventListener('click', () => {
-          tile.innerHTML = `<span class="reveal">${player.name} ${player.score.toLocaleString()}</span>`;
+          tile.innerHTML = `<span class="reveal">${player.name}<span class="score">${player.score.toLocaleString()}</span></span>`;
         });
 
         tile.addEventListener('mouseleave', () => {
