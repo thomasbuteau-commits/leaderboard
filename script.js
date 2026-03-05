@@ -8,103 +8,115 @@ function startCountdown() {
   setInterval(() => {
 
     const now = new Date().getTime();
-    const difference = targetDate - now;
+    const diff = targetDate - now;
 
-    if (difference <= 0) {
-      countdownElement.textContent = "TIME'S UP.";
+    if (diff <= 0) {
+      countdownElement.textContent = "TIME'S UP";
       return;
     }
 
-    const days = Math.floor(difference/(1000*60*60*24));
-    const hours = Math.floor((difference/(1000*60*60))%24);
-    const minutes = Math.floor((difference/(1000*60))%60);
-    const seconds = Math.floor((difference/1000)%60);
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff / (1000*60*60)) % 24);
+    const minutes = Math.floor((diff / (1000*60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
 
     countdownElement.textContent =
       `${days}D ${hours}H ${minutes}M ${seconds}S`;
 
   },1000);
+
 }
 
 startCountdown();
 
 
-// ===== LOAD LEADERBOARD =====
 
-function loadLeaderboard() {
+/* ===== LOAD LEADERBOARD ===== */
 
-  fetch('./data.json?t=' + new Date().getTime())
+async function loadLeaderboard(){
 
-  .then(response => response.json())
+  const response = await fetch('./data.json?t=' + Date.now());
+  const data = await response.json();
 
-  .then(data => {
+  /* SORT */
 
-    const board = document.getElementById("leaderboard");
-    board.innerHTML = "";
+  data.sort((a,b)=>{
 
-    let totalPoints = 0;
+    if(a.eliminated && !b.eliminated) return 1;
+    if(!a.eliminated && b.eliminated) return -1;
 
-    // SORT
+    if(b.score !== a.score) return b.score - a.score;
 
-    data.sort((a,b) => {
+    return a.id.localeCompare(b.id);
 
-      if (a.eliminated && !b.eliminated) return 1;
-      if (!a.eliminated && b.eliminated) return -1;
+  });
 
-      if (b.score !== a.score) return b.score - a.score;
+  const board = document.getElementById("leaderboard");
+  board.innerHTML = "";
 
-      return a.id.localeCompare(b.id);
-    });
+  /* CALCULATE TOTAL */
 
-    data.forEach(player => {
+  let total = 0;
 
-      totalPoints += player.score;
+  data.forEach(player => {
 
-      const tile = document.createElement("div");
-      tile.className = "player";
-      tile.textContent = player.id;
+    total += player.score;
 
-      if (player.score === 0) tile.classList.add("zero-score");
-      if (player.eliminated) tile.classList.add("eliminated");
+    const tile = document.createElement("div");
+    tile.className = "player";
 
-      tile.addEventListener("click", () => {
-
-        tile.classList.add("reveal");
-
-        tile.innerHTML =
-          `${player.name} <span class="won">₩</span>${player.score.toLocaleString()}`;
-      });
-
-      tile.addEventListener("mouseleave", () => {
-
-        tile.classList.remove("reveal");
-        tile.textContent = player.id;
-      });
-
-      board.appendChild(tile);
-    });
-
-    // UPDATE PRIZE POOL
-
-    const pool = document.getElementById("prizePool");
-    if (pool) {
-      pool.innerHTML = `TOTAL PRIZE POOL : ₩${totalPoints.toLocaleString()}`;
+    if(player.score === 0){
+      tile.classList.add("zero-score");
     }
 
-  })
+    if(player.eliminated){
+      tile.classList.add("eliminated");
+    }
 
-  .catch(error => {
-    console.error("Error loading leaderboard:", error);
+    tile.textContent = player.id;
+
+    /* CLICK REVEAL */
+
+    tile.addEventListener("click", ()=>{
+
+      tile.classList.add("open");
+
+      tile.innerHTML =
+      `<div class="scoreText">
+        ${player.name} 
+        <span class="won">₩</span>${player.score.toLocaleString()}
+      </div>`;
+
+    });
+
+    /* AUTO CLOSE */
+
+    tile.addEventListener("mouseleave", ()=>{
+
+      tile.classList.remove("open");
+      tile.textContent = player.id;
+
+    });
+
+    board.appendChild(tile);
+
   });
+
+  /* UPDATE PRIZE POOL */
+
+  const prize = document.getElementById("prizePool");
+
+  if(prize){
+    prize.textContent =
+      `TOTAL PRIZE POOL : ₩${total.toLocaleString()}`;
+  }
 
 }
 
-
-// FIRST LOAD
+/* INITIAL LOAD */
 
 loadLeaderboard();
 
-
-// AUTO REFRESH EVERY 10 SECONDS
+/* AUTO REFRESH EVERY 10s */
 
 setInterval(loadLeaderboard,10000);
