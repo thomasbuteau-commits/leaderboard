@@ -5,29 +5,35 @@ function startCountdown() {
 
   setInterval(() => {
     const now = new Date().getTime();
-    const diff = targetDate - now;
-    if (diff <= 0) {
+    const difference = targetDate - now;
+
+    if (difference <= 0) {
       countdownElement.textContent = "TIME'S UP.";
       return;
     }
-    const days = Math.floor(diff / (1000*60*60*24));
-    const hours = Math.floor((diff / (1000*60*60)) % 24);
-    const minutes = Math.floor((diff / (1000*60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
+
+    const days = Math.floor(difference / (1000*60*60*24));
+    const hours = Math.floor((difference / (1000*60*60)) % 24);
+    const minutes = Math.floor((difference / (1000*60)) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
+
     countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
   }, 1000);
 }
+
 startCountdown();
 
-// Fetch and render leaderboard
+// Leaderboard
 function loadLeaderboard() {
-  fetch('./data.json?t=' + Date.now()) // prevent caching
-    .then(res => res.json())
+  fetch('./data.json?t=' + new Date().getTime()) // prevent cache
+    .then(response => response.json())
     .then(data => {
-      data.sort((a,b) => {
-        if(a.eliminated && !b.eliminated) return 1;
-        if(!a.eliminated && b.eliminated) return -1;
-        if(b.score !== a.score) return b.score - a.score;
+
+      // Sort: non-eliminated first, then descending score
+      data.sort((a, b) => {
+        if (a.eliminated && !b.eliminated) return 1;
+        if (!a.eliminated && b.eliminated) return -1;
+        if (b.score !== a.score) return b.score - a.score;
         return a.id.localeCompare(b.id);
       });
 
@@ -37,25 +43,32 @@ function loadLeaderboard() {
       data.forEach(player => {
         const tile = document.createElement('div');
         tile.className = 'tile';
-        if(player.score === 0) tile.classList.add('zero-score');
-        if(player.eliminated) tile.classList.add('eliminated');
+        if (player.eliminated) tile.classList.add('eliminated');
 
-        tile.textContent = player.id;
+        tile.textContent = player.id; // front ID
 
+        // Reveal on click
         tile.addEventListener('click', () => {
-          tile.innerHTML = `<span class="reveal">${player.name}<span class="score">${player.score.toLocaleString()}</span></span>`;
+          tile.innerHTML = `
+            <span class="name">${player.name}</span>
+            <span class="points">₩<span class="won-flicker">${player.score.toLocaleString()}</span></span>
+          `;
         });
 
+        // Return to ID on mouse leave
         tile.addEventListener('mouseleave', () => {
           tile.textContent = player.id;
         });
 
         board.appendChild(tile);
       });
+
     })
     .catch(err => console.error("Error loading leaderboard:", err));
 }
 
-// Initial load + update every 10s
+// Initial load
 loadLeaderboard();
+
+// Refresh every 10 seconds
 setInterval(loadLeaderboard, 10000);
