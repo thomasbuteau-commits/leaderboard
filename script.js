@@ -26,16 +26,17 @@ startCountdown();
 
 
 // ================== Leaderboard ==================
-const board = document.getElementById('leaderboard');
-const tiles = {};
+
+const board = document.getElementById("leaderboard");
+const tileMap = new Map();
 
 function loadLeaderboard() {
 
-  fetch('./data.json?cache=' + Date.now())
-    .then(response => response.json())
+  fetch("./data.json?cache=" + Date.now())
+    .then(res => res.json())
     .then(data => {
 
-      // Sort: non-eliminated first, highest score first, ID ascending
+      // Sort players
       data.sort((a, b) => {
         if (a.eliminated && !b.eliminated) return 1;
         if (!a.eliminated && b.eliminated) return -1;
@@ -43,21 +44,19 @@ function loadLeaderboard() {
         return a.id.localeCompare(b.id);
       });
 
-      data.forEach((player, index) => {
+      data.forEach(player => {
 
-        let tile = tiles[player.id];
+        let tile = tileMap.get(player.id);
 
+        // Create tile once
         if (!tile) {
-          tile = document.createElement('div');
-          tile.className = 'player';
+          tile = document.createElement("div");
+          tile.className = "player";
           tile.dataset.id = player.id;
-          tile.style.transition = 'all 0.5s ease';
-
           board.appendChild(tile);
-          tiles[player.id] = tile;
+          tileMap.set(player.id, tile);
 
-          // Click behavior uses CURRENT dataset values
-          tile.addEventListener('click', () => {
+          tile.addEventListener("click", () => {
             tile.innerHTML = `
               <div>${tile.dataset.id}</div>
               <div style="font-size:22px; margin-top:10px;">
@@ -69,13 +68,12 @@ function loadLeaderboard() {
             `;
           });
 
-          tile.addEventListener('mouseleave', () => {
+          tile.addEventListener("mouseleave", () => {
             tile.textContent = tile.dataset.id;
           });
         }
 
-        // Update dataset values EVERY refresh
-        tile.dataset.id = player.id;
+        // Update stored data
         tile.dataset.name = player.name;
         tile.dataset.score = player.score;
 
@@ -83,17 +81,20 @@ function loadLeaderboard() {
         tile.classList.toggle("zero-score", player.score === 0);
         tile.classList.toggle("eliminated", player.eliminated);
 
-        // If not open, keep it simple
+        // If tile not open, keep simple view
         if (!tile.querySelector("div:nth-child(2)")) {
           tile.textContent = player.id;
         }
+      });
 
-        // Reorder smoothly
-        tile.style.order = index;
+      // Reorder tiles smoothly (no clearing, no flashing)
+      data.forEach(player => {
+        const tile = tileMap.get(player.id);
+        board.appendChild(tile);
       });
 
     })
-    .catch(err => console.error("Error loading leaderboard:", err));
+    .catch(err => console.error("Leaderboard error:", err));
 }
 
 loadLeaderboard();
