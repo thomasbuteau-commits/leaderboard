@@ -42,7 +42,10 @@ function loadLeaderboard() {
       data.forEach(player => {
         const tile = document.createElement('div');
         tile.className = 'tile';
-        if(player.eliminated) tile.classList.add('eliminated');
+
+        // Zero score red vs positive green
+        if(player.score === 0) tile.classList.add('zero-score');
+        else tile.classList.add('positive');
 
         tile.textContent = player.id; // front ID
 
