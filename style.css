@@ -9,7 +9,7 @@ body {
 
 /* Title */
 .title {
-  font-size: 28px;
+  font-size: 36px;   /* increased ~15% */
   letter-spacing: 4px;
   margin-bottom: 10px;
 }
@@ -34,7 +34,7 @@ body {
 #leaderboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px; /* more spacing between tiles */
+  gap: 25px; /* more space between tiles */
   max-width: 1200px;
   margin: auto;
 }
@@ -44,12 +44,13 @@ body {
   background: #002b1a;
   border: 2px solid #00ff66;
   border-radius: 6px;
-  padding: 8px 10px;
-  font-size: 14px;
+  padding: 10px 12px;
+  font-size: 18px;        /* bigger front font */
+  font-weight: bold;      /* bold ID number */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px; /* shorter height */
+  height: 45px;           /* slightly taller but still rectangular */
   box-shadow: 0 0 8px #00ff6644;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
@@ -58,7 +59,7 @@ body {
 
 /* Hover glow */
 .tile:hover {
-  box-shadow: 0 0 25px #00ff66;
+  box-shadow: 0 0 28px #00ff66;
 }
 
 /* Eliminated tile */
@@ -84,8 +85,19 @@ body {
   animation: redPulse 2.5s infinite;
 }
 
-/* Reveal name + score on one line */
+/* Reveal name + score on one line with flickering ₩ */
 .reveal {
-  font-size: 12px; /* smaller to fit on one line */
+  font-size: 14px; /* bigger reveal font */
+  font-weight: normal; /* not bold on reveal */
   white-space: nowrap;
+}
+.reveal::before {
+  content: "₩";
+  margin-right: 2px;
+  color: #00ff66;
+  animation: wonFlicker 1s infinite;
+}
+@keyframes wonFlicker {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.3; }
 }
