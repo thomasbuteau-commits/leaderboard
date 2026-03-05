@@ -1,9 +1,11 @@
 // Countdown Timer
+
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
   const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
 
   setInterval(() => {
+
     const now = new Date().getTime();
     const difference = targetDate - now;
 
@@ -17,59 +19,88 @@ function startCountdown() {
     const minutes = Math.floor((difference / (1000*60)) % 60);
     const seconds = Math.floor((difference / 1000) % 60);
 
-    countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
-  }, 1000);
+    countdownElement.textContent =
+      `${days}D ${hours}H ${minutes}M ${seconds}S`;
+
+  },1000);
 }
+
 startCountdown();
 
-// Leaderboard
+
+
+/* ===== LEADERBOARD ===== */
+
 function loadLeaderboard() {
-  fetch('./data.json?t=' + new Date().getTime()) // prevent cache
-    .then(res => res.json())
-    .then(data => {
 
-      // Sort: non-eliminated first, then descending score
-      data.sort((a, b) => {
-        if(a.eliminated && !b.eliminated) return 1;
-        if(!a.eliminated && b.eliminated) return -1;
-        if(b.score !== a.score) return b.score - a.score;
-        return a.id.localeCompare(b.id);
-      });
+fetch('./data.json')
+.then(response => response.json())
+.then(data => {
 
-      const board = document.getElementById('leaderboard');
-      board.innerHTML = "";
+data.sort((a,b)=>{
 
-      data.forEach(player => {
-        const tile = document.createElement('div');
-        tile.className = 'tile';
+if(a.eliminated && !b.eliminated) return 1;
+if(!a.eliminated && b.eliminated) return -1;
 
-        // Zero score red vs positive green
-        if(player.score === 0) tile.classList.add('zero-score');
-        else tile.classList.add('positive');
+if(b.score !== a.score) return b.score - a.score;
 
-        tile.textContent = player.id; // front ID
+return a.id.localeCompare(b.id);
 
-        // Reveal on click
-        tile.addEventListener('click', () => {
-          tile.innerHTML = `
-            <span class="name">${player.name}</span>
-            <span class="points">₩<span class="won-flicker">${player.score.toLocaleString()}</span></span>
-          `;
-        });
+});
 
-        // Return to ID on mouse leave
-        tile.addEventListener('mouseleave', () => {
-          tile.textContent = player.id;
-        });
+const board = document.getElementById('leaderboard');
+board.innerHTML="";
 
-        board.appendChild(tile);
-      });
-    })
-    .catch(err => console.error("Error loading leaderboard:", err));
+data.forEach(player=>{
+
+const row = document.createElement('div');
+row.className='player';
+
+row.textContent=player.id;
+
+if(player.score===0){
+row.classList.add("zero-score");
 }
 
-// Initial load
+if(player.eliminated===true){
+row.classList.add("eliminated");
+}
+
+row.addEventListener('click',()=>{
+
+row.classList.add("show-score");
+
+row.innerHTML=`
+<div class="reveal">
+<span class="initials">${player.name}</span>
+<span class="score"><span class="won">₩</span>${player.score.toLocaleString()}</span>
+</div>
+`;
+
+});
+
+/* close on mouse leave */
+
+row.addEventListener('mouseleave',()=>{
+row.classList.remove("show-score");
+row.textContent=player.id;
+});
+
+board.appendChild(row);
+
+});
+
+})
+.catch(error=>{
+console.error("Error loading leaderboard:",error);
+});
+
+}
+
+/* initial load */
+
 loadLeaderboard();
 
-// Refresh every 10 seconds
-setInterval(loadLeaderboard, 10000);
+/* auto refresh every 10 seconds */
+
+setInterval(loadLeaderboard,10000);
