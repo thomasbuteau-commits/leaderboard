@@ -9,13 +9,13 @@ body {
 
 /* TITLE */
 .title {
-  font-size: 36px; /* slightly bigger */
+  font-size: 42px; /* bigger title */
   letter-spacing: 4px;
   margin-bottom: 10px;
 }
 
 .prep {
-  font-size: 28px;
+  font-size: 30px;
   animation: flicker 3s infinite;
 }
 
@@ -26,7 +26,7 @@ body {
 
 /* COUNTDOWN */
 #countdown {
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 20px;
   color: #00ff66;
   text-shadow: 0 0 10px #00ff66;
@@ -37,7 +37,7 @@ body {
   display: grid;
   grid-template-columns: repeat(4, auto);
   justify-content: center;
-  gap: 10px;
+  gap: 10px; /* more space between tiles */
   margin: 0 auto;
   padding: 10px 0;
 }
@@ -47,24 +47,23 @@ body {
   background: #002b1a;
   border: 2px solid #00ff66;
   border-radius: 6px;
-  padding: 10px 16px;
-  font-size: 20px;
-  font-weight: bold; /* front ID bolded */
+  padding: 12px 16px;
+  font-size: 22px; /* bigger font */
+  font-weight: bold; /* ID bolded */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  box-shadow: 0 0 8px #00ff6644;
+  min-width: 120px; /* consistent width */
+  height: 60px; /* consistent height */
+  box-shadow: 0 0 10px #00ff6644;
   cursor: pointer;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, min-width 0.3s ease, height 0.3s ease;
   white-space: nowrap;
-  width: auto;
-  min-width: 70px;
 }
 
 /* Hover glow */
 .tile:hover {
-  box-shadow: 0 0 25px #00ff66;
+  box-shadow: 0 0 30px #00ff66;
 }
 
 /* ELIMINATED TILES */
@@ -72,7 +71,7 @@ body {
   background: #2b0000;
   border-color: #ff2c2c;
   color: #ff6a6a;
-  box-shadow: 0 0 8px #ff2c2c55;
+  box-shadow: 0 0 10px #ff2c2c55;
 }
 
 .eliminated:hover {
@@ -81,7 +80,7 @@ body {
 
 /* NAME + SCORE on reveal */
 .name, .points {
-  font-size: 18px;
+  font-size: 20px; /* slightly bigger than before */
   font-weight: normal;
   display: inline-block;
   margin: 0 4px;
