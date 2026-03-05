@@ -3,10 +3,12 @@
 // =========================
 
 function startCountdown() {
+
   const countdownElement = document.getElementById("countdown");
   const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
 
   setInterval(() => {
+
     const now = new Date().getTime();
     const difference = targetDate - now;
 
@@ -24,17 +26,18 @@ function startCountdown() {
       `${days}D ${hours}H ${minutes}M ${seconds}S`;
 
   }, 1000);
+
 }
 
 startCountdown();
 
 
 // =========================
-// LEADERBOARD SYSTEM
+// LEADERBOARD
 // =========================
 
 const board = document.getElementById("leaderboard");
-let tileMap = {};
+const tileMap = {};
 
 
 // =========================
@@ -55,6 +58,7 @@ function sortPlayers(data) {
   });
 
   return data;
+
 }
 
 
@@ -65,36 +69,42 @@ function sortPlayers(data) {
 function createTile(player) {
 
   const tile = document.createElement("div");
+
   tile.className = "player";
   tile.dataset.id = player.id;
   tile.dataset.open = "false";
 
   tile.textContent = player.id;
 
+  // click reveal
   tile.addEventListener("click", () => {
+
+    const p = tile.playerData;
 
     tile.dataset.open = "true";
 
     tile.innerHTML = `
-      <div>${player.id}</div>
+      <div>${p.id}</div>
       <div style="font-size:22px;margin-top:10px;">
-        ${player.name}
+        ${p.name}
       </div>
-      <div class="score" style="font-size:18px;margin-top:5px;">
-        ${player.score.toLocaleString()}
+      <div style="font-size:18px;margin-top:5px;">
+        ${p.score.toLocaleString()}
       </div>
     `;
 
   });
 
+  // close on mouse leave
   tile.addEventListener("mouseleave", () => {
 
     tile.dataset.open = "false";
-    tile.textContent = player.id;
+    tile.textContent = tile.playerData.id;
 
   });
 
   return tile;
+
 }
 
 
@@ -106,71 +116,40 @@ function updateBoard(data) {
 
   const players = sortPlayers(data);
 
-  const firstPositions = {};
-
-  board.querySelectorAll(".player").forEach(tile => {
-    firstPositions[tile.dataset.id] = tile.getBoundingClientRect();
-  });
-
-
   players.forEach(player => {
 
     let tile = tileMap[player.id];
 
     if (!tile) {
+
       tile = createTile(player);
       tileMap[player.id] = tile;
       board.appendChild(tile);
-    }
-
-    // update score if tile is open
-    if (tile.dataset.open === "true") {
-
-      const scoreElement = tile.querySelector(".score");
-
-      if (scoreElement) {
-        scoreElement.textContent = player.score.toLocaleString();
-      }
 
     }
 
-    // update color states
-    if (player.score === 0) tile.classList.add("zero-score");
-    else tile.classList.remove("zero-score");
+    // store latest player data
+    tile.playerData = player;
 
-    if (player.eliminated) tile.classList.add("eliminated");
-    else tile.classList.remove("eliminated");
+    // update colors
+    if (player.score === 0)
+      tile.classList.add("zero-score");
+    else
+      tile.classList.remove("zero-score");
+
+    if (player.eliminated)
+      tile.classList.add("eliminated");
+    else
+      tile.classList.remove("eliminated");
 
   });
 
 
-  // reorder tiles
+  // reorder tiles by sorted list
   players.forEach(player => {
-    board.appendChild(tileMap[player.id]);
-  });
 
-
-  // animate movement
-  const tiles = board.querySelectorAll(".player");
-
-  tiles.forEach(tile => {
-
-    const first = firstPositions[tile.dataset.id];
-    const last = tile.getBoundingClientRect();
-
-    if (!first) return;
-
-    const dx = first.left - last.left;
-    const dy = first.top - last.top;
-
-    tile.style.transform = `translate(${dx}px, ${dy}px)`;
-
-    requestAnimationFrame(() => {
-
-      tile.style.transition = "transform 0.6s ease";
-      tile.style.transform = "";
-
-    });
+    const tile = tileMap[player.id];
+    board.appendChild(tile);
 
   });
 
@@ -186,21 +165,23 @@ function loadLeaderboard() {
   fetch("./data.json?cache=" + Date.now())
     .then(response => response.json())
     .then(data => {
+
       updateBoard(data);
+
     })
     .catch(error => {
+
       console.error("Leaderboard error:", error);
+
     });
 
 }
 
 
 // =========================
-// AUTO REFRESH
+// INITIAL LOAD + AUTO REFRESH
 // =========================
 
 loadLeaderboard();
 
-setInterval(() => {
-  loadLeaderboard();
-}, 10000);
+setInterval(loadLeaderboard, 10000);
