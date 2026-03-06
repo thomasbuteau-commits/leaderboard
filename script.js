@@ -30,7 +30,7 @@ function loadLeaderboard() {
     .then(response => response.json())
     .then(data => {
 
-      // SORTING: eliminated at bottom, then by score, then by id
+      // SORTING
       data.sort((a, b) => {
         if (a.eliminated && !b.eliminated) return 1;
         if (!a.eliminated && b.eliminated) return -1;
@@ -38,7 +38,7 @@ function loadLeaderboard() {
         return a.id.localeCompare(b.id);
       });
 
-      // Find top scorer (not eliminated)
+      // Top scorer
       const topPlayer = data.find(p => !p.eliminated && p.score > 0);
 
       const board = document.getElementById('leaderboard');
@@ -49,7 +49,6 @@ function loadLeaderboard() {
         row.className = 'player';
         row.textContent = player.id;
 
-        // Apply original classes
         if (player.score === 0) row.classList.add("zero-score");
         if (player.eliminated) row.classList.add("eliminated");
         if (topPlayer && player.id === topPlayer.id) row.classList.add("rank1");
@@ -58,15 +57,12 @@ function loadLeaderboard() {
         row.addEventListener('click', () => {
           row.classList.add("revealed");
           row.innerHTML = `
-            <div class="reveal" style="display:flex; justify-content:space-between; align-items:center; padding:0 10px;">
+            <div class="reveal">
               <span class="initials">${player.name}</span>
               <span class="score"><span class="won">₩</span>${player.score.toLocaleString()}</span>
             </div>
           `;
-          // Keep top scorer glow if applicable
-          if (topPlayer && player.id === topPlayer.id) {
-            row.classList.add("rank1");
-          }
+          if (topPlayer && player.id === topPlayer.id) row.classList.add("rank1");
         });
 
         // HIDE REVEAL ON MOUSE LEAVE
