@@ -12,19 +12,13 @@ body {
 .global-scanline {
   content: "";
   position: fixed;
-  top: 0;
+  top: -4px; /* start above viewport */
   left: 0;
   width: 100%;
-  height: 4px;                       /* thicker for visibility */
-  background: rgba(0,255,102,0.5);   /* brighter green */
+  height: 3px;                     /* moderate thickness */
+  background: rgba(0,255,102,0.35); /* subtle green brightness */
   pointer-events: none;
-  animation: globalScan 6s linear infinite;
   z-index: 9999;
-}
-
-@keyframes globalScan {
-  0% { top: 0; }
-  100% { top: 100%; }
 }
 
 /* ===== TITLE ===== */
