@@ -30,7 +30,6 @@ function loadLeaderboard() {
     .then(response => response.json())
     .then(data => {
 
-      // SORTING
       data.sort((a, b) => {
         if (a.eliminated && !b.eliminated) return 1;
         if (!a.eliminated && b.eliminated) return -1;
@@ -38,7 +37,6 @@ function loadLeaderboard() {
         return a.id.localeCompare(b.id);
       });
 
-      // Top scorer
       const topPlayer = data.find(p => !p.eliminated && p.score > 0);
 
       const board = document.getElementById('leaderboard');
@@ -53,7 +51,6 @@ function loadLeaderboard() {
         if (player.eliminated) row.classList.add("eliminated");
         if (topPlayer && player.id === topPlayer.id) row.classList.add("rank1");
 
-        // CLICK TO REVEAL
         row.addEventListener('click', () => {
           row.classList.add("revealed");
           row.innerHTML = `
@@ -65,7 +62,6 @@ function loadLeaderboard() {
           if (topPlayer && player.id === topPlayer.id) row.classList.add("rank1");
         });
 
-        // HIDE REVEAL ON MOUSE LEAVE
         row.addEventListener('mouseleave', () => {
           row.classList.remove("revealed");
           row.textContent = player.id;
@@ -78,8 +74,5 @@ function loadLeaderboard() {
     .catch(error => console.error("Error loading leaderboard:", error));
 }
 
-// INITIAL LOAD
 loadLeaderboard();
-
-// AUTO REFRESH EVERY 10 SECONDS
 setInterval(loadLeaderboard, 10000);
