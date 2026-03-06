@@ -84,10 +84,11 @@ body {
 }
 
 .player .reveal {
-  font-size: 28px;      /* smaller font to keep tile height consistent */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  font-size: 28px;                /* sets a readable size without resizing tile */
+  display: flex;                   /* flex container for single line layout */
+  justify-content: space-between;  /* initials left, score right */
+  align-items: center;             /* vertical centering inside tile */
+  height: 100%;                    /* ensure it fills tile height for centering */
   width: 100%;
   padding: 0 10px;
   box-sizing: border-box;
