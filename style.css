@@ -84,7 +84,7 @@ body {
 }
 
 .player .reveal {
-  font-size: 22px;      /* smaller font to keep tile height consistent */
+  font-size: 28px;      /* smaller font to keep tile height consistent */
   display: flex;
   justify-content: space-between;
   align-items: center;
