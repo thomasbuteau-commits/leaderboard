@@ -94,6 +94,12 @@ body {
   box-sizing: border-box;
 }
 
+.player .reveal .won {
+  font-size: 22px;       /* slightly smaller than the 28px text */
+  vertical-align: middle; /* ensures it lines up nicely with the score */
+  margin-right: 4px;      /* optional spacing between symbol and number */
+}
+
 /* ===== ZERO SCORE RED PULSE ===== */
 
 @keyframes redPulse {
