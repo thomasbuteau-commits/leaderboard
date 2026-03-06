@@ -83,6 +83,16 @@ body {
   box-shadow: 0 0 40px #00ff66;
 }
 
+.player .reveal {
+  font-size: 22px;      /* smaller font to keep tile height consistent */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
 /* ===== ZERO SCORE RED PULSE ===== */
 
 @keyframes redPulse {
