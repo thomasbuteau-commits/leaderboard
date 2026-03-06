@@ -5,6 +5,26 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  overflow-x: hidden;
+}
+
+/* ===== GLOBAL CCTV SCANLINE ===== */
+.global-scanline {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;                       /* thicker for visibility */
+  background: rgba(0,255,102,0.5);   /* brighter green */
+  pointer-events: none;
+  animation: globalScan 6s linear infinite;
+  z-index: 9999;
+}
+
+@keyframes globalScan {
+  0% { top: 0; }
+  100% { top: 100%; }
 }
 
 /* ===== TITLE ===== */
@@ -18,29 +38,11 @@ body {
 /* ===== LEADERBOARD GRID ===== */
 #leaderboard {
   display: grid;
-  grid-template-columns: repeat(4,1fr); /* keep 4 columns as you requested */
+  grid-template-columns: repeat(4,1fr);
   gap: 30px;
   width: 80%;
   margin: 60px auto;
-  position: relative; /* for the global scanline */
-}
-
-/* ===== GLOBAL CCTV SCANLINE ===== */
-#leaderboard::before {
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:2px;                 /* subtle thickness */
-  background: rgba(0,255,102,0.2); /* lighter green with opacity */
-  animation: leaderboardScan 6s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes leaderboardScan {
-  0% { top: 0; }
-  100% { top: 100%; }
+  position: relative;
 }
 
 /* ===== PLAYER TILE ===== */
@@ -87,18 +89,18 @@ body {
 
 /* ===== REVEAL PANEL ===== */
 .player .reveal {
-  font-size: 28px;                /* smaller than main tile to prevent resizing */
+  font-size: 28px;
   display: flex;
   justify-content: space-between;
-  align-items: center;            /* vertical centering */
-  height: 100%;                   /* fills tile height */
+  align-items: center;
+  height: 100%;
   width: 100%;
   padding: 0 10px;
   box-sizing: border-box;
 }
 
 .player .reveal .won {
-  font-size: 22px;        /* slightly smaller than 28px text */
+  font-size: 22px;
   vertical-align: middle;
   margin-right: 4px;
 }
