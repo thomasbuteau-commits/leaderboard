@@ -103,14 +103,17 @@ function animateGlobalScanline() {
 animateGlobalScanline();
 
 
-// ===== RANDOMIZE POINT SCALE FLICKER =====
+// ===== RANDOMIZE POINT SCALE FLICKER WITH SLOW DELAY =====
 function randomizePointFlicker() {
   const lines = document.querySelectorAll('.point-scale li');
   lines.forEach(line => {
-    const speed = (3 + Math.random() * 2).toFixed(2) + 's'; // 3-5s flicker speed
+    const speed = (3 + Math.random() * 2).toFixed(2) + 's'; // 3-5s flicker duration
     const brightness = 10 + Math.floor(Math.random() * 20); // 10-30px brightness
+    const delay = (5 + Math.random() * 10).toFixed(2) + 's'; // 5-15s random delay
+
     line.style.setProperty('--flicker-speed', speed);
     line.style.setProperty('--flicker-bright', brightness + 'px');
+    line.style.animationDelay = delay; // random start delay
   });
 }
 
