@@ -1,3 +1,130 @@
+body {
+  background-color: black;
+  font-family: 'Courier New', monospace;
+  color: #00ff66;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* ===== GLOBAL CCTV SCANLINE ===== */
+.global-scanline {
+  content: "";
+  position: fixed;
+  top: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(0,255,102,0.35);
+  pointer-events: none;
+  z-index: 9999;
+  animation: flickerOpacity 0.2s infinite;
+}
+
+@keyframes flickerOpacity {
+  0%   { opacity: 0.2; }
+  25%  { opacity: 0.35; }
+  50%  { opacity: 0.15; }
+  75%  { opacity: 0.4; }
+  100% { opacity: 0.25; }
+}
+
+/* ===== TITLE ===== */
+.title { font-size: 70px; margin-top: 40px; letter-spacing: 8px; text-shadow: 0 0 20px #00ff66; }
+.prep { font-size: 32px; letter-spacing: 6px; display: inline-block; animation: flicker 3s infinite; }
+
+@keyframes flicker { 0%,18%,22%,25%,53%,57%,100% { opacity:1; text-shadow:0 0 15px #00ff66; } 20%,24%,55% { opacity:0.7; text-shadow:0 0 5px #00ff66; } }
+
+/* ===== COUNTDOWN ===== */
+.countdown { font-size:36px; margin-top:20px; text-shadow:0 0 15px #00ff66; letter-spacing:3px; }
+
+/* ===== LEADERBOARD GRID ===== */
+#leaderboard {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 30px;
+  width: 80%;
+  margin: 60px auto;
+  position: relative;
+}
+
+/* ===== PLAYER TILE ===== */
+.player {
+  position: relative;
+  font-size: 48px;
+  padding: 30px 0;
+  border: 2px solid #00ff66;
+  box-shadow: 0 0 25px #00ff66;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.6s ease;
+}
+
+.player:hover { background-color:black; color:#00ff66; box-shadow:0 0 60px #00ff66; }
+.player.revealed { background-color:black; color:#00ff66; box-shadow:0 0 40px #00ff66; }
+
+/* ===== ZERO SCORE ===== */
+@keyframes redPulse { 0% { box-shadow:0 0 10px #ff0033; } 50% { box-shadow:0 0 40px #ff0033; } 100% { box-shadow:0 0 10px #ff0033; } }
+.zero-score { border-color:#ff0033 !important; color:#ff0033 !important; animation:redPulse 2.5s infinite; }
+.zero-score:hover { background-color:#ff0033; color:white !important; box-shadow:0 0 60px #ff0033; }
+
+/* ===== ELIMINATED ===== */
+.eliminated { opacity:0.3; }
+.eliminated::after {
+  content:"ELIMINATED";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:#ff0033;
+  font-size:20px;
+  font-weight:bold;
+  letter-spacing:3px;
+}
+
+/* ===== TOP SCORER ===== */
+.rank1 { animation:leaderPulse 3s infinite; }
+@keyframes leaderPulse { 0% { box-shadow:0 0 25px #00ff66; } 50% { box-shadow:0 0 90px #00ff66; } 100% { box-shadow:0 0 25px #00ff66; } }
+
+/* ===== WON SYMBOL FLICKER ===== */
+.won { animation:wonFlicker 2.5s infinite; }
+@keyframes wonFlicker { 0%,18%,22%,25%,53%,57%,100% { opacity:1; text-shadow:0 0 10px #00ff66,0 0 20px #00ff66; } 20%,24%,55% { opacity:0.4; text-shadow:0 0 5px #00ff66; } }
+
+/* ===== REVEAL PANEL ===== */
+.player .reveal {
+  font-size: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.player .reveal .won {
+  font-size: 22px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* ===== CCTV SCREEN FLICKER ===== */
+body::after {
+  content:"";
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none;
+  background:rgba(255,255,255,0.03);
+  animation:cctvFlicker 12s infinite;
+}
+@keyframes cctvFlicker { 0%,96%,100% { opacity:0; } 97% { opacity:0.3; } 98% { opacity:0; } 99% { opacity:0.2; } }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:900px) { #leaderboard { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:500px) { #leaderboard { grid-template-columns:repeat(1,1fr); gap:15px; } }
+
 /* ===== POINT AWARD SCALE ===== */
 .point-scale {
   width: 80%;
@@ -7,13 +134,17 @@
   font-family: 'Courier New', monospace;
   font-size: 18px;
   letter-spacing: 1px;
-  text-shadow: 0 0 10px #00ff66;
 }
 
 .point-scale h2 {
   text-align: center;
   font-size: 28px;
   margin-bottom: 20px;
+  text-shadow: 0 0 15px #00ff66;
+}
+
+.glitch-text {
+  animation: flicker 3s infinite;
 }
 
 .point-scale ul {
@@ -22,5 +153,25 @@
 }
 
 .point-scale li {
+  display: flex;
+  justify-content: space-between;
   margin: 6px 0;
+  padding: 4px 0;
+  text-shadow: 0 0 5px #00ff66;
+  transition: text-shadow 0.2s ease-in-out;
+}
+
+.point-scale li:hover {
+  text-shadow: 0 0 15px #00ff66, 0 0 25px #00ff66;
+}
+
+.point-scale .action {
+  flex: 1;
+  text-align: left;
+}
+
+.point-scale .points {
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 60px;
 }
