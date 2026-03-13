@@ -1,4 +1,4 @@
-// COUNTDOWN TIMER
+// ===== COUNTDOWN TIMER =====
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
   const targetDate = new Date("2026-03-13T13:00:00+09:00").getTime();
@@ -24,7 +24,8 @@ function startCountdown() {
 
 startCountdown();
 
-// LOAD LEADERBOARD
+
+// ===== LOAD LEADERBOARD =====
 function loadLeaderboard() {
   fetch('./data.json?t=' + new Date().getTime())
     .then(response => response.json())
@@ -77,12 +78,13 @@ function loadLeaderboard() {
 loadLeaderboard();
 setInterval(loadLeaderboard, 10000);
 
-// GLOBAL SCANLINE ANIMATION WITH RANDOMIZED SPEED
+
+// ===== GLOBAL SCANLINE ANIMATION =====
 function animateGlobalScanline() {
   const scan = document.querySelector('.global-scanline');
 
   function moveLine() {
-    const duration = 6000 + Math.random() * 9000; // 6s to 15s
+    const duration = 6000 + Math.random() * 9000; // 6-15s
     scan.style.transition = `top ${duration}ms linear`;
     scan.style.top = '100%';
     scan.addEventListener('transitionend', resetLine, { once: true });
@@ -91,7 +93,7 @@ function animateGlobalScanline() {
   function resetLine() {
     scan.style.transition = 'none';
     scan.style.top = '-4px';
-    setTimeout(moveLine, 100 + Math.random() * 700); // random short pause
+    setTimeout(moveLine, 100 + Math.random() * 700);
   }
 
   scan.style.top = '-4px';
@@ -99,3 +101,18 @@ function animateGlobalScanline() {
 }
 
 animateGlobalScanline();
+
+
+// ===== RANDOMIZE POINT SCALE FLICKER =====
+function randomizePointFlicker() {
+  const lines = document.querySelectorAll('.point-scale li');
+  lines.forEach(line => {
+    const speed = (3 + Math.random() * 2).toFixed(2) + 's'; // 3-5s flicker speed
+    const brightness = 10 + Math.floor(Math.random() * 20); // 10-30px brightness
+    line.style.setProperty('--flicker-speed', speed);
+    line.style.setProperty('--flicker-bright', brightness + 'px');
+  });
+}
+
+// Run once on page load
+randomizePointFlicker();
