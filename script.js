@@ -77,18 +77,13 @@ function loadLeaderboard() {
 loadLeaderboard();
 setInterval(loadLeaderboard, 10000);
 
-// GLOBAL SCANLINE ANIMATION WITH RANDOMIZED SPEED AND BRIGHT PULSES
+// GLOBAL SCANLINE ANIMATION WITH RANDOMIZED SPEED
 function animateGlobalScanline() {
   const scan = document.querySelector('.global-scanline');
 
   function moveLine() {
     const duration = 6000 + Math.random() * 9000; // 6s to 15s
     scan.style.transition = `top ${duration}ms linear`;
-
-    // occasional pulse (5% chance to brighten)
-    if (Math.random() < 0.05) scan.style.background = 'rgba(0,255,102,0.6)';
-    else scan.style.background = 'rgba(0,255,102,0.35)';
-
     scan.style.top = '100%';
     scan.addEventListener('transitionend', resetLine, { once: true });
   }
