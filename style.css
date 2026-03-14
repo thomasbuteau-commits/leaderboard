@@ -10,24 +10,15 @@ body {
 
 /* ===== GLOBAL CCTV SCANLINE ===== */
 .global-scanline {
+  content: "";
   position: fixed;
-  top: -4px;
+  top: -4px; /* start above viewport */
   left: 0;
   width: 100%;
-  height: 3px;
-  background: rgba(0,255,102,0.35); /* default subtle green */
+  height: 3px;                     /* moderate thickness */
+  background: rgba(0,255,102,0.35); /* subtle green brightness */
   pointer-events: none;
   z-index: 9999;
-
-  animation: flickerOpacity 0.2s infinite;
-}
-
-@keyframes flickerOpacity {
-  0%   { opacity: 0.2; }
-  25%  { opacity: 0.35; }
-  50%  { opacity: 0.15; }
-  75%  { opacity: 0.4; }
-  100% { opacity: 0.25; }
 }
 
 /* ===== TITLE ===== */
