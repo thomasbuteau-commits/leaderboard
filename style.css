@@ -14,13 +14,19 @@ body{
 
 .global-scanline{
   position:fixed;
+  top:-3px;
   left:0;
-  top:-4px;
   width:100%;
   height:3px;
   background:rgba(0,255,102,0.35);
   pointer-events:none;
   z-index:9999;
+  animation:scanMove 8s linear infinite;
+}
+
+@keyframes scanMove{
+  0%{top:-3px;}
+  100%{top:100vh;}
 }
 
 /* =========================
@@ -102,7 +108,7 @@ body{
 ========================= */
 
 .eliminated{
-  opacity:0.3;
+  opacity:0.35;
 }
 
 /* =========================
@@ -144,7 +150,7 @@ body{
 
   letter-spacing:6px;
 
-  margin-bottom:30px;
+  margin-bottom:35px;
 
   text-shadow:0 0 15px #00ff66;
 }
@@ -168,21 +174,21 @@ body{
 
   align-items:center;
 
-  gap:10px;
+  gap:12px;
 
   margin:14px 0;
 
   font-size:20px;
 }
 
-/* action text */
+/* LEFT TEXT */
 
 .point-scale .action{
 
   white-space:nowrap;
 }
 
-/* DOT LEADER (auto sized) */
+/* DOT LEADER */
 
 .point-scale li::after{
 
@@ -190,12 +196,12 @@ body{
 
   flex:1;
 
-  border-bottom:2px dotted rgba(0,255,102,0.5);
+  border-bottom:2px dotted rgba(0,255,102,0.6);
 
   transform:translateY(-3px);
 }
 
-/* points */
+/* RIGHT POINT VALUE */
 
 .point-scale .points{
 
