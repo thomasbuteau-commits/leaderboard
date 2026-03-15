@@ -21,7 +21,7 @@ body{
   background:rgba(0,255,102,0.35);
   pointer-events:none;
   z-index:9999;
-  animation:scanMove 8s linear infinite;
+  animation:scanMove 9s linear infinite;
 }
 
 @keyframes scanMove{
@@ -40,9 +40,64 @@ body{
   text-shadow:0 0 20px #00ff66;
 }
 
+/* =========================
+   IO PREP GLITCH
+========================= */
+
 .prep{
+  position:relative;
   font-size:32px;
   letter-spacing:6px;
+  display:inline-block;
+  animation:glitchTrigger 18s infinite;
+}
+
+/* ghost layers */
+
+.prep::before,
+.prep::after{
+  content:"IO PREP";
+  position:absolute;
+  left:0;
+  top:0;
+  opacity:0;
+}
+
+.prep::before{
+  color:#ff0033;
+}
+
+.prep::after{
+  color:#00ffff;
+}
+
+/* trigger timing */
+
+@keyframes glitchTrigger{
+
+  0%,92%,100%{
+    transform:none;
+  }
+
+  93%{
+    transform:translate(-2px,1px);
+  }
+
+  94%{
+    transform:translate(2px,-1px);
+  }
+
+  95%{
+    transform:translate(-3px,0px);
+  }
+
+  96%{
+    transform:translate(3px,1px);
+  }
+
+  97%{
+    transform:none;
+  }
 }
 
 /* =========================
