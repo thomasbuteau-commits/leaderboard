@@ -1,119 +1,210 @@
-// COUNTDOWN TIMER
+/* COUNTDOWN */
 
-function startCountdown() {
-  const countdownElement = document.getElementById("countdown");
-  const targetDate = new Date("2026-03-20T13:00:00+09:00").getTime();
+function startCountdown(){
 
-  const interval = setInterval(() => {
-    const now = new Date().getTime();
-    const difference = targetDate - now;
+const el=document.getElementById("countdown")
 
-    if (difference <= 0) {
-      countdownElement.textContent = "TIME'S UP.";
-      clearInterval(interval);
-      return;
-    }
+const target=new Date("2026-03-20T13:00:00+09:00").getTime()
 
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((difference / (1000 * 60)) % 60);
-    const seconds = Math.floor((difference / 1000) % 60);
+setInterval(()=>{
 
-    countdownElement.textContent =
-      "Countdown to Bullet Points: " +
-      `${days}D ${hours}H ${minutes}M ${seconds}S`;
+const now=new Date().getTime()
+const diff=target-now
 
-  }, 1000);
+if(diff<=0){
+el.textContent="TIME'S UP."
+return
 }
 
-startCountdown();
+const d=Math.floor(diff/(1000*60*60*24))
+const h=Math.floor((diff/(1000*60*60))%24)
+const m=Math.floor((diff/(1000*60))%60)
+const s=Math.floor((diff/1000)%60)
 
+el.textContent=`Countdown to Bullet Points: ${d}D ${h}H ${m}M ${s}S`
 
-
-// LOAD LEADERBOARD
-
-function loadLeaderboard() {
-
-  fetch('./data.json?t=' + new Date().getTime())
-    .then(response => response.json())
-    .then(data => {
-
-      data.sort((a, b) => {
-
-        if (a.eliminated && !b.eliminated) return 1;
-        if (!a.eliminated && b.eliminated) return -1;
-
-        if (b.score !== a.score) return b.score - a.score;
-
-        return a.id.localeCompare(b.id);
-      });
-
-      const topPlayer = data.find(p => !p.eliminated && p.score > 0);
-
-      const board = document.getElementById('leaderboard');
-      board.innerHTML = "";
-
-      data.forEach(player => {
-
-        const row = document.createElement('div');
-        row.className = 'player';
-        row.textContent = player.id;
-
-        if (player.score === 0) row.classList.add("zero-score");
-        if (player.eliminated) row.classList.add("eliminated");
-        if (topPlayer && player.id === topPlayer.id) row.classList.add("rank1");
-
-        row.addEventListener('click', () => {
-
-          row.classList.add("revealed");
-
-          row.innerHTML = `
-            <div class="reveal">
-              <span class="initials">${player.name}</span>
-              <span class="score"><span class="won">₩</span>${player.score.toLocaleString()}</span>
-            </div>
-          `;
-
-        });
-
-        row.addEventListener('mouseleave', () => {
-
-          row.classList.remove("revealed");
-          row.textContent = player.id;
-
-        });
-
-        board.appendChild(row);
-
-      });
-
-    })
-
-    .catch(error => console.error("Error loading leaderboard:", error));
+},1000)
 
 }
 
-loadLeaderboard();
-setInterval(loadLeaderboard, 10000);
+startCountdown()
 
 
 
-// RANDOM IO PREP GLITCH
+/* LEADERBOARD */
 
-function randomGlitch(){
+function loadLeaderboard(){
 
-  const prep = document.querySelector(".prep");
+fetch('./data.json?t='+new Date().getTime())
 
-  prep.classList.add("glitch");
+.then(r=>r.json())
 
-  setTimeout(()=>{
-    prep.classList.remove("glitch");
-  },350);
+.then(data=>{
 
-  const next = 5000 + Math.random() * 10000;
+data.sort((a,b)=>{
 
-  setTimeout(randomGlitch, next);
+if(a.eliminated&&!b.eliminated) return 1
+if(!a.eliminated&&b.eliminated) return -1
+
+if(b.score!==a.score)
+return b.score-a.score
+
+return a.id.localeCompare(b.id)
+
+})
+
+const top=data.find(p=>!p.eliminated&&p.score>0)
+
+const board=document.getElementById("leaderboard")
+
+board.innerHTML=""
+
+data.forEach(player=>{
+
+const row=document.createElement("div")
+row.className="player"
+row.textContent=player.id
+
+if(player.score===0)
+row.classList.add("zero-score")
+
+if(player.eliminated)
+row.classList.add("eliminated")
+
+if(top&&player.id===top.id)
+row.classList.add("rank1")
+
+row.addEventListener("click",()=>{
+
+row.classList.add("revealed")
+
+row.innerHTML=`
+<div class="reveal">
+<span>${player.name}</span>
+<span><span class="won">₩</span>${player.score.toLocaleString()}</span>
+</div>
+`
+
+startWonFlicker()
+
+})
+
+row.addEventListener("mouseleave",()=>{
+row.classList.remove("revealed")
+row.textContent=player.id
+})
+
+board.appendChild(row)
+
+})
+
+startWonFlicker()
+
+})
 
 }
 
-randomGlitch();
+loadLeaderboard()
+
+setInterval(loadLeaderboard,10000)
+
+
+
+/* RANDOM TEXT GLITCH */
+
+function randomGlitch(el,min,max){
+
+function trigger(){
+
+el.classList.add("glitch")
+
+setTimeout(()=>{
+el.classList.remove("glitch")
+},300)
+
+schedule()
+
+}
+
+function schedule(){
+
+const delay=Math.random()*(max-min)+min
+
+setTimeout(trigger,delay)
+
+}
+
+schedule()
+
+}
+
+randomGlitch(document.querySelector(".prep"),5000,15000)
+randomGlitch(document.getElementById("countdown"),6000,18000)
+
+
+
+/* WON SYMBOL FLICKER */
+
+function startWonFlicker(){
+
+document.querySelectorAll(".won").forEach(symbol=>{
+
+function flicker(){
+
+symbol.style.opacity=0
+
+setTimeout(()=>{
+symbol.style.opacity=1
+},80+Math.random()*120)
+
+schedule()
+
+}
+
+function schedule(){
+
+const delay=2000+Math.random()*8000
+
+setTimeout(flicker,delay)
+
+}
+
+schedule()
+
+})
+
+}
+
+
+
+/* SCANLINE */
+
+function animateGlobalScanline(){
+
+const scan=document.querySelector('.global-scanline')
+
+function move(){
+
+const duration=6000+Math.random()*9000
+
+scan.style.transition=`top ${duration}ms linear`
+scan.style.top='100%'
+
+scan.addEventListener('transitionend',reset,{once:true})
+
+}
+
+function reset(){
+
+scan.style.transition='none'
+scan.style.top='-4px'
+
+setTimeout(move,100+Math.random()*700)
+
+}
+
+setTimeout(move,500)
+
+}
+
+animateGlobalScanline()
