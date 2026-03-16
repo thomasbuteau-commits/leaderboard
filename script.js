@@ -15,15 +15,15 @@ function startCountdown() {
       return;
     }
 
-    const days = Math.floor(difference / (1000*60*60*24));
-    const hours = Math.floor((difference/(1000*60*60))%24);
-    const minutes = Math.floor((difference/(1000*60))%60);
-    const seconds = Math.floor((difference/1000)%60);
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((difference / (1000 * 60)) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
 
     countdownElement.textContent =
       `Countdown to Bullet Points: ${days}D ${hours}H ${minutes}M ${seconds}S`;
 
-  },1000)
+  }, 1000);
 
 }
 
@@ -79,8 +79,6 @@ row.innerHTML=`
 </div>
 `
 
-startWonFlicker()
-
 })
 
 row.addEventListener("mouseleave",()=>{
@@ -105,7 +103,7 @@ setInterval(loadLeaderboard,10000)
 
 
 
-// RANDOM IO PREP GLITCH
+// IO PREP RANDOM GLITCH
 
 function randomGlitch(){
 
@@ -114,9 +112,7 @@ const prep=document.querySelector(".prep")
 prep.classList.add("glitch")
 
 setTimeout(()=>{
-
 prep.classList.remove("glitch")
-
 },350)
 
 const next=5000+Math.random()*10000
@@ -129,30 +125,29 @@ randomGlitch()
 
 
 
-// RANDOM WON SYMBOL FLICKER
+// RANDOM ₩ GLITCH
 
-function startWonFlicker(){
+function randomWonGlitch(){
 
 const symbols=document.querySelectorAll(".won")
 
-symbols.forEach(symbol=>{
+if(symbols.length===0){
+setTimeout(randomWonGlitch,4000)
+return
+}
 
-const delay=Math.random()*3000
+const symbol=symbols[Math.floor(Math.random()*symbols.length)]
 
-const speed=120+Math.random()*250
+symbol.classList.add("glitch")
 
 setTimeout(()=>{
+symbol.classList.remove("glitch")
+},350)
 
-setInterval(()=>{
+const next=3000+Math.random()*8000
 
-symbol.style.opacity=Math.random()<0.5?0.25:1
-
-},speed)
-
-},delay)
-
-})
+setTimeout(randomWonGlitch,next)
 
 }
 
-startWonFlicker()
+randomWonGlitch()
