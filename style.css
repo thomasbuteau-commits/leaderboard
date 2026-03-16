@@ -49,55 +49,55 @@ body{
   font-size:32px;
   letter-spacing:6px;
   display:inline-block;
-  animation:glitchTrigger 18s infinite;
+  animation:prepGlitch 18s infinite;
 }
 
-/* ghost layers */
+@keyframes prepGlitch{
 
-.prep::before,
-.prep::after{
-  content:"IO PREP";
-  position:absolute;
-  left:0;
-  top:0;
-  opacity:0;
-}
+  /* normal display most of the time */
 
-.prep::before{
-  color:#ff0033;
-}
-
-.prep::after{
-  color:#00ffff;
-}
-
-/* trigger timing */
-
-@keyframes glitchTrigger{
-
-  0%,92%,100%{
+  0%,90%,100%{
     transform:none;
+    opacity:1;
+  }
+
+  /* glitch burst */
+
+  91%{
+    transform:translate(-4px,2px);
+    opacity:1;
+  }
+
+  92%{
+    transform:translate(4px,-2px);
+    opacity:0;
   }
 
   93%{
-    transform:translate(-2px,1px);
+    transform:translate(-3px,1px);
+    opacity:1;
   }
 
   94%{
-    transform:translate(2px,-1px);
+    transform:translate(3px,-1px);
+    opacity:0.4;
   }
 
   95%{
-    transform:translate(-3px,0px);
+    transform:translate(-2px,0);
+    opacity:1;
   }
 
   96%{
-    transform:translate(3px,1px);
+    transform:translate(2px,1px);
+    opacity:0;
   }
 
   97%{
     transform:none;
+    opacity:1;
   }
+
 }
 
 /* =========================
