@@ -1,29 +1,30 @@
 // COUNTDOWN TIMER
 
 function startCountdown() {
+
   const countdownElement = document.getElementById("countdown");
   const targetDate = new Date("2026-03-20T13:00:00+09:00").getTime();
 
-  const interval = setInterval(() => {
+  setInterval(() => {
+
     const now = new Date().getTime();
     const difference = targetDate - now;
 
     if (difference <= 0) {
       countdownElement.textContent = "TIME'S UP.";
-      clearInterval(interval);
       return;
     }
 
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((difference / (1000 * 60)) % 60);
-    const seconds = Math.floor((difference / 1000) % 60);
+    const days = Math.floor(difference / (1000*60*60*24));
+    const hours = Math.floor((difference/(1000*60*60))%24);
+    const minutes = Math.floor((difference/(1000*60))%60);
+    const seconds = Math.floor((difference/1000)%60);
 
     countdownElement.textContent =
-      "Countdown to Bullet Points: " +
-      `${days}D ${hours}H ${minutes}M ${seconds}S`;
+      `Countdown to Bullet Points: ${days}D ${hours}H ${minutes}M ${seconds}S`;
 
-  }, 1000);
+  },1000)
+
 }
 
 startCountdown();
@@ -32,69 +33,75 @@ startCountdown();
 
 // LOAD LEADERBOARD
 
-function loadLeaderboard() {
+function loadLeaderboard(){
 
-  fetch('./data.json?t=' + new Date().getTime())
-    .then(response => response.json())
-    .then(data => {
+fetch('./data.json?t='+new Date().getTime())
+.then(response=>response.json())
+.then(data=>{
 
-      data.sort((a, b) => {
+data.sort((a,b)=>{
 
-        if (a.eliminated && !b.eliminated) return 1;
-        if (!a.eliminated && b.eliminated) return -1;
+if(a.eliminated && !b.eliminated) return 1
+if(!a.eliminated && b.eliminated) return -1
 
-        if (b.score !== a.score) return b.score - a.score;
+if(b.score !== a.score) return b.score-a.score
 
-        return a.id.localeCompare(b.id);
-      });
+return a.id.localeCompare(b.id)
 
-      const topPlayer = data.find(p => !p.eliminated && p.score > 0);
+})
 
-      const board = document.getElementById('leaderboard');
-      board.innerHTML = "";
+const topPlayer=data.find(p=>!p.eliminated && p.score>0)
 
-      data.forEach(player => {
+const board=document.getElementById("leaderboard")
 
-        const row = document.createElement('div');
-        row.className = 'player';
-        row.textContent = player.id;
+board.innerHTML=""
 
-        if (player.score === 0) row.classList.add("zero-score");
-        if (player.eliminated) row.classList.add("eliminated");
-        if (topPlayer && player.id === topPlayer.id) row.classList.add("rank1");
+data.forEach(player=>{
 
-        row.addEventListener('click', () => {
+const row=document.createElement("div")
 
-          row.classList.add("revealed");
+row.className="player"
 
-          row.innerHTML = `
-            <div class="reveal">
-              <span class="initials">${player.name}</span>
-              <span class="score"><span class="won">₩</span>${player.score.toLocaleString()}</span>
-            </div>
-          `;
+row.textContent=player.id
 
-        });
+if(player.score===0) row.classList.add("zero-score")
+if(player.eliminated) row.classList.add("eliminated")
+if(topPlayer && player.id===topPlayer.id) row.classList.add("rank1")
 
-        row.addEventListener('mouseleave', () => {
+row.addEventListener("click",()=>{
 
-          row.classList.remove("revealed");
-          row.textContent = player.id;
+row.classList.add("revealed")
 
-        });
+row.innerHTML=`
+<div class="reveal">
+<span class="initials">${player.name}</span>
+<span class="score"><span class="won">₩</span>${player.score.toLocaleString()}</span>
+</div>
+`
 
-        board.appendChild(row);
+startWonFlicker()
 
-      });
+})
 
-    })
+row.addEventListener("mouseleave",()=>{
 
-    .catch(error => console.error("Error loading leaderboard:", error));
+row.classList.remove("revealed")
+
+row.textContent=player.id
+
+})
+
+board.appendChild(row)
+
+})
+
+})
 
 }
 
-loadLeaderboard();
-setInterval(loadLeaderboard, 10000);
+loadLeaderboard()
+
+setInterval(loadLeaderboard,10000)
 
 
 
@@ -102,18 +109,50 @@ setInterval(loadLeaderboard, 10000);
 
 function randomGlitch(){
 
-  const prep = document.querySelector(".prep");
+const prep=document.querySelector(".prep")
 
-  prep.classList.add("glitch");
+prep.classList.add("glitch")
 
-  setTimeout(()=>{
-    prep.classList.remove("glitch");
-  },350);
+setTimeout(()=>{
 
-  const next = 5000 + Math.random() * 10000;
+prep.classList.remove("glitch")
 
-  setTimeout(randomGlitch, next);
+},350)
+
+const next=5000+Math.random()*10000
+
+setTimeout(randomGlitch,next)
 
 }
 
-randomGlitch();
+randomGlitch()
+
+
+
+// RANDOM WON SYMBOL FLICKER
+
+function startWonFlicker(){
+
+const symbols=document.querySelectorAll(".won")
+
+symbols.forEach(symbol=>{
+
+const delay=Math.random()*3000
+
+const speed=120+Math.random()*250
+
+setTimeout(()=>{
+
+setInterval(()=>{
+
+symbol.style.opacity=Math.random()<0.5?0.25:1
+
+},speed)
+
+},delay)
+
+})
+
+}
+
+startWonFlicker()
