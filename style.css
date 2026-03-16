@@ -23,7 +23,7 @@ body{
   z-index:9999;
 
   animation:
-    scanMove 12s linear infinite,
+    scanMove 9s linear infinite,
     scanFlicker 1.3s infinite;
 }
 
@@ -61,34 +61,34 @@ body{
 }
 
 /* =========================
-   IO PREP FAST GLITCH FLICKER
+   IO PREP
 ========================= */
 
 .prep{
   font-size:32px;
   letter-spacing:6px;
   display:inline-block;
-  animation:prepFlicker 7s infinite;
 }
 
-@keyframes prepFlicker{
+/* glitch burst animation */
 
-  /* normal display */
+.prep.glitch{
+  animation:prepGlitch .35s;
+}
 
-  0%,92%,100%{
-    opacity:1;
-  }
+@keyframes prepGlitch{
 
-  /* rapid glitch burst */
-
-  93%{opacity:0}
-  93.5%{opacity:1}
-
-  94%{opacity:0}
-  94.3%{opacity:1}
-
-  94.6%{opacity:0}
-  95%{opacity:1}
+  0%{opacity:1}
+  10%{opacity:0}
+  20%{opacity:1}
+  30%{opacity:0}
+  40%{opacity:.3}
+  50%{opacity:1}
+  60%{opacity:0}
+  70%{opacity:1}
+  80%{opacity:.4}
+  90%{opacity:0}
+  100%{opacity:1}
 
 }
 
