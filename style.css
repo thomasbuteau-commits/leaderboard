@@ -61,33 +61,33 @@ body{
 }
 
 /* =========================
-   IO PREP FLICKER
+   IO PREP FAST GLITCH FLICKER
 ========================= */
 
 .prep{
   font-size:32px;
   letter-spacing:6px;
   display:inline-block;
-
-  animation:prepFlicker 11s infinite;
+  animation:prepFlicker 5s infinite;
 }
 
 @keyframes prepFlicker{
 
-  /* normal */
+  /* normal display */
 
-  0%,88%,100%{
+  0%,92%,100%{
     opacity:1;
   }
 
-  /* flicker burst */
+  /* rapid glitch burst */
 
-  89%{opacity:0}
-  90%{opacity:1}
-  91%{opacity:0}
-  92%{opacity:.3}
-  93%{opacity:1}
+  93%{opacity:0}
+  93.5%{opacity:1}
+
   94%{opacity:0}
+  94.3%{opacity:1}
+
+  94.6%{opacity:0}
   95%{opacity:1}
 
 }
