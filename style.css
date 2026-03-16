@@ -9,24 +9,44 @@ body{
 }
 
 /* =========================
-   GLOBAL SCANLINE
+   GLOBAL CCTV SCANLINE
 ========================= */
 
 .global-scanline{
   position:fixed;
-  top:-3px;
+  top:-4px;
   left:0;
   width:100%;
   height:3px;
-  background:rgba(0,255,102,0.35);
+  background:#00ff66;
   pointer-events:none;
   z-index:9999;
-  animation:scanMove 9s linear infinite;
+
+  animation:
+    scanMove 9s linear infinite,
+    scanFlicker 1.3s infinite;
 }
 
 @keyframes scanMove{
-  0%{top:-3px;}
+  0%{top:-4px;}
   100%{top:100vh;}
+}
+
+@keyframes scanFlicker{
+
+  0%{opacity:.45}
+  2%{opacity:.15}
+  3%{opacity:.5}
+  8%{opacity:.25}
+  9%{opacity:.5}
+  25%{opacity:.4}
+  26%{opacity:.1}
+  27%{opacity:.45}
+  60%{opacity:.35}
+  61%{opacity:.1}
+  62%{opacity:.45}
+  100%{opacity:.4}
+
 }
 
 /* =========================
@@ -41,62 +61,34 @@ body{
 }
 
 /* =========================
-   IO PREP GLITCH
+   IO PREP FLICKER
 ========================= */
 
 .prep{
-  position:relative;
   font-size:32px;
   letter-spacing:6px;
   display:inline-block;
-  animation:prepGlitch 18s infinite;
+
+  animation:prepFlicker 11s infinite;
 }
 
-@keyframes prepGlitch{
+@keyframes prepFlicker{
 
-  /* normal display most of the time */
+  /* normal */
 
-  0%,90%,100%{
-    transform:none;
+  0%,88%,100%{
     opacity:1;
   }
 
-  /* glitch burst */
+  /* flicker burst */
 
-  91%{
-    transform:translate(-4px,2px);
-    opacity:1;
-  }
-
-  92%{
-    transform:translate(4px,-2px);
-    opacity:0;
-  }
-
-  93%{
-    transform:translate(-3px,1px);
-    opacity:1;
-  }
-
-  94%{
-    transform:translate(3px,-1px);
-    opacity:0.4;
-  }
-
-  95%{
-    transform:translate(-2px,0);
-    opacity:1;
-  }
-
-  96%{
-    transform:translate(2px,1px);
-    opacity:0;
-  }
-
-  97%{
-    transform:none;
-    opacity:1;
-  }
+  89%{opacity:0}
+  90%{opacity:1}
+  91%{opacity:0}
+  92%{opacity:.3}
+  93%{opacity:1}
+  94%{opacity:0}
+  95%{opacity:1}
 
 }
 
@@ -158,7 +150,7 @@ body{
 ========================= */
 
 .eliminated{
-  opacity:0.35;
+  opacity:.35;
 }
 
 /* =========================
@@ -182,9 +174,11 @@ body{
   margin:80px auto;
   border:2px solid #00ff66;
   padding:40px;
+
   box-shadow:
   0 0 25px #00ff66,
-  inset 0 0 10px rgba(0,255,102,0.3);
+  inset 0 0 10px rgba(0,255,102,.3);
+
   text-align:left;
 }
 
