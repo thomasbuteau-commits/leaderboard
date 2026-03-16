@@ -1,8 +1,7 @@
 // COUNTDOWN TIMER
+
 function startCountdown() {
   const countdownElement = document.getElementById("countdown");
-
-  // Friday March 20, 2026 at 1:00 PM Japan time
   const targetDate = new Date("2026-03-20T13:00:00+09:00").getTime();
 
   const interval = setInterval(() => {
@@ -10,7 +9,7 @@ function startCountdown() {
     const difference = targetDate - now;
 
     if (difference <= 0) {
-      countdownElement.textContent = "Bullet Points Time!";
+      countdownElement.textContent = "TIME'S UP.";
       clearInterval(interval);
       return;
     }
@@ -21,7 +20,8 @@ function startCountdown() {
     const seconds = Math.floor((difference / 1000) % 60);
 
     countdownElement.textContent =
-      `Countdown to Bullet Points: ${days}D ${hours}H ${minutes}M ${seconds}S`;
+      "Countdown to Bullet Points: " +
+      `${days}D ${hours}H ${minutes}M ${seconds}S`;
 
   }, 1000);
 }
@@ -29,17 +29,22 @@ function startCountdown() {
 startCountdown();
 
 
+
 // LOAD LEADERBOARD
+
 function loadLeaderboard() {
+
   fetch('./data.json?t=' + new Date().getTime())
     .then(response => response.json())
     .then(data => {
 
-      // SORTING
       data.sort((a, b) => {
+
         if (a.eliminated && !b.eliminated) return 1;
         if (!a.eliminated && b.eliminated) return -1;
+
         if (b.score !== a.score) return b.score - a.score;
+
         return a.id.localeCompare(b.id);
       });
 
@@ -58,7 +63,6 @@ function loadLeaderboard() {
         if (player.eliminated) row.classList.add("eliminated");
         if (topPlayer && player.id === topPlayer.id) row.classList.add("rank1");
 
-        // CLICK TO REVEAL
         row.addEventListener('click', () => {
 
           row.classList.add("revealed");
@@ -66,22 +70,17 @@ function loadLeaderboard() {
           row.innerHTML = `
             <div class="reveal">
               <span class="initials">${player.name}</span>
-              <span class="score">
-                <span class="won">₩</span>${player.score.toLocaleString()}
-              </span>
+              <span class="score"><span class="won">₩</span>${player.score.toLocaleString()}</span>
             </div>
           `;
 
-          if (topPlayer && player.id === topPlayer.id) {
-            row.classList.add("rank1");
-          }
-
         });
 
-        // HIDE WHEN MOUSE LEAVES
         row.addEventListener('mouseleave', () => {
+
           row.classList.remove("revealed");
           row.textContent = player.id;
+
         });
 
         board.appendChild(row);
@@ -89,39 +88,32 @@ function loadLeaderboard() {
       });
 
     })
+
     .catch(error => console.error("Error loading leaderboard:", error));
+
 }
 
 loadLeaderboard();
 setInterval(loadLeaderboard, 10000);
 
 
-// GLOBAL SCANLINE ANIMATION
-function animateGlobalScanline() {
 
-  const scan = document.querySelector('.global-scanline');
+// RANDOM IO PREP GLITCH
 
-  function moveLine() {
+function randomGlitch(){
 
-    const duration = 6000 + Math.random() * 9000; // 6–15 seconds
+  const prep = document.querySelector(".prep");
 
-    scan.style.transition = `top ${duration}ms linear`;
-    scan.style.top = '100%';
+  prep.classList.add("glitch");
 
-    scan.addEventListener('transitionend', resetLine, { once: true });
-  }
+  setTimeout(()=>{
+    prep.classList.remove("glitch");
+  },350);
 
-  function resetLine() {
+  const next = 5000 + Math.random() * 10000;
 
-    scan.style.transition = 'none';
-    scan.style.top = '-4px';
+  setTimeout(randomGlitch, next);
 
-    setTimeout(moveLine, 100 + Math.random() * 700);
-
-  }
-
-  scan.style.top = '-4px';
-  setTimeout(moveLine, 500);
 }
 
-animateGlobalScanline();
+randomGlitch();
