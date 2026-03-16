@@ -23,7 +23,7 @@ body{
   z-index:9999;
 
   animation:
-    scanMove 9s linear infinite,
+    scanMove 12s linear infinite,
     scanFlicker 1.3s infinite;
 }
 
@@ -68,7 +68,7 @@ body{
   font-size:32px;
   letter-spacing:6px;
   display:inline-block;
-  animation:prepFlicker 5s infinite;
+  animation:prepFlicker 7s infinite;
 }
 
 @keyframes prepFlicker{
