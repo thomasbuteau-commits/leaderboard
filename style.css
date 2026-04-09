@@ -141,6 +141,11 @@ background:black;
 .zero-score{
 border-color:#ff0033!important;
 color:#ff0033!important;
+box-shadow:0 0 25px #ff0033!important;
+}
+
+.zero-score:hover{
+box-shadow:0 0 60px #ff0033!important;
 }
 
 /* =========================
