@@ -1,15 +1,15 @@
 [
   { "id": "000", "name": "DEMO", "score": 0, "eliminated": true },
-  { "id": "001", "name": "TH", "score": 85000 },
-  { "id": "002", "name": "AR", "score": 50000 },
-  { "id": "003", "name": "AS", "score": 45000 },
-  { "id": "004", "name": "ERB", "score": 60000 },
-  { "id": "005", "name": "FN", "score": 119999 },
-  { "id": "006", "name": "HH", "score": 45000 },
-  { "id": "007", "name": "HS", "score": 120000 },
-  { "id": "008", "name": "PM", "score": 139999 },
-  { "id": "009", "name": "RY", "score": 70000 },
-  { "id": "010", "name": "ST", "score": 65000 },
-  { "id": "011", "name": "SA", "score": 85000 },
-  { "id": "012", "name": "TC", "score": 30000 }
+  { "id": "001", "name": "TH", "score": 0 },
+  { "id": "002", "name": "AR", "score": 0 },
+  { "id": "003", "name": "AS", "score": 0 },
+  { "id": "004", "name": "ERB", "score": 0 },
+  { "id": "005", "name": "FN", "score": 24999 },
+  { "id": "006", "name": "HH", "score": 0 },
+  { "id": "007", "name": "HS", "score": 0 },
+  { "id": "008", "name": "PM", "score": 0 },
+  { "id": "009", "name": "RY", "score": 0 },
+  { "id": "010", "name": "ST", "score": 0 },
+  { "id": "011", "name": "SA", "score": 0 },
+  { "id": "012", "name": "TC", "score": 24999 }
 ]
