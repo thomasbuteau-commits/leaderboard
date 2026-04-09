@@ -3,7 +3,7 @@
 function startCountdown() {
 
   const countdownElement = document.getElementById("countdown");
-  const targetDate = new Date("2026-03-20T13:00:00+09:00").getTime();
+  const targetDate = new Date("2026-04-10T13:00:00+09:00").getTime();
 
   setInterval(() => {
 
@@ -21,7 +21,7 @@ function startCountdown() {
     const seconds = Math.floor((difference / 1000) % 60);
 
     countdownElement.textContent =
-      `Countdown to Bullet Points: ${days}D ${hours}H ${minutes}M ${seconds}S`;
+      `Countdown to Proposal: ${days}D ${hours}H ${minutes}M ${seconds}S`;
 
   }, 1000);
 
