@@ -21,7 +21,7 @@ function startCountdown() {
     const seconds = Math.floor((difference / 1000) % 60);
 
     countdownElement.textContent =
-      `Countdown to Proposal: ${days}D ${hours}H ${minutes}M ${seconds}S`;
+      `Countdown to Graphic Organizer: ${days}D ${hours}H ${minutes}M ${seconds}S`;
 
   }, 1000);
 
