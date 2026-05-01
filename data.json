@@ -6,10 +6,10 @@
   { "id": "004", "name": "ERB", "score": 35000 },
   { "id": "005", "name": "FN", "score": 99999 },
   { "id": "006", "name": "HH", "score": 15000 },
-  { "id": "007", "name": "HS", "score": 99999 },
-  { "id": "008", "name": "PM", "score": 40000 },
+  { "id": "007", "name": "HS", "score": 119999 },
+  { "id": "008", "name": "PM", "score": 60000 },
   { "id": "009", "name": "RY", "score": 70000 },
-  { "id": "010", "name": "ST", "score": 75000 },
+  { "id": "010", "name": "ST", "score": 95000 },
   { "id": "011", "name": "SA", "score": 75000 },
   { "id": "012", "name": "TC", "score": 39999 }
 ]
