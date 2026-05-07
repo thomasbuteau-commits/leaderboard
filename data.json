@@ -1,7 +1,7 @@
 [
   { "id": "000", "name": "DEMO", "score": 0, "eliminated": true },
   { "id": "001", "name": "TH", "score": 45000 },
-  { "id": "002", "name": "AR", "score": 70000 },
+  { "id": "002", "name": "AR", "score": 120000 },
   { "id": "003", "name": "AS", "score": 75000 },
   { "id": "004", "name": "ERB", "score": 50000 },
   { "id": "005", "name": "FN", "score": 99999 },
